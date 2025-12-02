@@ -1,58 +1,71 @@
-<x-layouts.auth>
-    <div class="flex flex-col gap-6">
-        <x-auth-header :title="__('Log in to your account')" :description="__('Enter your email and password below to log in')" />
 
-        <!-- Session Status -->
-        <x-auth-session-status class="text-center" :status="session('status')" />
+@extends('layouts.app')
 
-        <form method="POST" action="{{ route('login.store') }}" class="flex flex-col gap-6">
+@section('content')
+
+<!-- Tombol Login Petugas -->
+<div class="position-absolute top-0 end-0 p-4">
+    <a href="{{ route('petugas.login') }}" class="btn d-flex align-items-center gap-2 shadow-sm" style="background-color:#ffff;">
+        <i class="bi bi-box-arrow-in-right"></i> Login Petugas
+    </a>
+</div>
+
+<div class="d-flex justify-content-center align-items-center" style="min-height:100vh;">
+    <div class="card shadow p-4" style="width: 420px; background:#ffff">
+        
+        <!-- Logo -->
+        <div class="text-center mb-4">
+            <div class="mx-auto d-flex justify-content-center align-items-center">
+                <img src="{{ asset('img/Gemini_Generated_Image_ckcuywckcuywckcu-removebg-preview.png') }}" alt="Logo" style="width: 230px; height: auto; object-fit: contain; margin-top:-20px; align-items:center;">
+            </div>
+        </div>
+        <!-- Tabs Login / Register -->
+        <div class="d-flex justify-content-center mb-6 gap-4" style="margin-top: -30px;">
+            <a href="{{ route('login') }}"class=" text-secondary text-decoration-none fw-bold" ">
+                Login
+            </a>
+
+            <a href="{{ route('register') }}" class="text-secondary text-decoration-none fw-bold">
+                Register
+            </a>
+        </div>
+        <br>
+        <!-- Form Login -->
+        <form method="POST" action="{{ route('login.store') }}">
             @csrf
 
-            <!-- Email Address -->
-            <flux:input
-                name="email"
-                :label="__('Email address')"
-                type="email"
-                required
-                autofocus
-                autocomplete="email"
-                placeholder="email@example.com"
-            />
+            @if($errors->any())
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ $errors->first() }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
-            <!-- Password -->
-            <div class="relative">
-                <flux:input
-                    name="password"
-                    :label="__('Password')"
-                    type="password"
-                    required
-                    autocomplete="current-password"
-                    :placeholder="__('Password')"
-                    viewable
-                />
-
-                @if (Route::has('password.request'))
-                    <flux:link class="absolute top-0 text-sm end-0" :href="route('password.request')" wire:navigate>
-                        {{ __('Forgot your password?') }}
-                    </flux:link>
-                @endif
+            <div class="mb-3 d-flex align-items-center gap-2">
+                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" 
+                       placeholder="Email/Username Anda" value="{{ old('email') }}" required>
+                @error('email')
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                @enderror
             </div>
 
-            <!-- Remember Me -->
-            <flux:checkbox name="remember" :label="__('Remember me')" :checked="old('remember')" />
+            <div class="mb-3">
+                <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
+                       placeholder="Password Anda" required>
+                @error('password')
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                @enderror
+            </div>
 
-            <div class="flex items-center justify-end">
-                <flux:button variant="primary" type="submit" class="w-full" data-test="login-button">
-                    {{ __('Log in') }}
-                </flux:button>
+            <button type="submit" class="btn w-100 shadow-sm mb-2" style="background-color: d7e2d6;">
+                Login
+            </button>
+
+            <div class="text-center">
+                <a href="{{ route('password.request') }}" class="text-muted text-decoration-none">
+                    Forgot Password ?
+                </a>
             </div>
         </form>
-
-        @if (Route::has('register'))
-            <div class="space-x-1 text-sm text-center rtl:space-x-reverse text-zinc-600 dark:text-zinc-400">
-                <span>{{ __('Don\'t have an account?') }}</span>
-                <flux:link :href="route('register')" wire:navigate>{{ __('Sign up') }}</flux:link>
-            </div>
-        @endif
     </div>
-</x-layouts.auth>
+</div>

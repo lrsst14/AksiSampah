@@ -3,6 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
+use App\Http\Controllers\Auth\LoginRegisterController;
+
+// Warga: rute kustom login/register
+Route::get('/login', [LoginRegisterController::class, 'showWargaForm'])->name('login');
+Route::post('/login', [LoginRegisterController::class, 'wargaLogin'])->name('login.store');
+
+// Petugas: rute login petugas (placeholder untuk saat ini)
+Route::get('/petugas/login', [LoginRegisterController::class, 'showPetugasForm'])->name('petugas.login');
+Route::post('/petugas/login', [LoginRegisterController::class, 'petugasLogin'])->name('petugas.login.store');
 
 Route::get('/', function () {
     return view('welcome');
