@@ -18,20 +18,22 @@
                 <img src="{{ asset('img/Gemini_Generated_Image_ckcuywckcuywckcu-removebg-preview.png') }}" alt="Logo" style="width: 230px; height: auto; object-fit: contain; margin-top:-20px; align-items:center;">
             </div>
         </div>
-        <!-- Tabs Login / Register -->
-        <div class="d-flex justify-content-center mb-6 gap-4" style="margin-top: -30px;">
-            <a href="{{ route('petugas.login') }}" class="text-secondary text-decoration-none fw-bold">
-                Login
-            </a>
-
-            <a href="{{ route('petugas.register') }}" class="text-secondary text-decoration-none fw-bold">
-                Register
-            </a>
+        <!-- Title -->
+        <div class="text-center mb-4">
+            <h5 class="fw-bold text-secondary">Forgot Password Petugas</h5>
+            <p class="text-muted small">Masukkan email Anda untuk menerima link reset password</p>
         </div>
         <br>
-        <!-- Form Login Petugas -->
-        <form method="POST" action="{{ route('petugas.login.store') }}">
+        <!-- Form Forgot Password Petugas -->
+        <form method="POST" action="{{ route('petugas.password.email') }}">
             @csrf
+
+            @if(session('status'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('status') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
             @if($errors->any())
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -40,29 +42,22 @@
                 </div>
             @endif
 
-            <div class="mb-3 d-flex align-items-center gap-2">
+            <div class="mb-3">
                 <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" 
-                       placeholder="ID/Email Petugas" value="{{ old('email') }}" required>
+                       placeholder="Email Petugas" value="{{ old('email') }}" required autofocus>
                 @error('email')
                     <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
             </div>
 
-            <div class="mb-3">
-                <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
-                       placeholder="Password Petugas" required>
-                @error('password')
-                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                @enderror
-            </div>
-
             <button type="submit" class="btn w-100 shadow-sm mb-2" style="background-color: #d7e2d6;">
-                Login
+                Kirim Link Reset Password
             </button>
 
             <div class="text-center">
-                <a href="{{ route('petugas.password.request') }}" class="text-muted text-decoration-none">
-                    Forgot Password ?
+                <span class="text-muted">Ingat password Anda?</span>
+                <a href="{{ route('petugas.login') }}" class="text-muted text-decoration-none">
+                    Login di sini
                 </a>
             </div>
         </form>
@@ -70,4 +65,3 @@
 </div>
 
 @endsection
-

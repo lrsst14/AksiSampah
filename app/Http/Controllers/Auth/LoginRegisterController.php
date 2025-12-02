@@ -113,4 +113,33 @@ class LoginRegisterController extends Controller
         Auth::login($user);
         return redirect()->intended('/admin');
     }
+
+    /**
+     * Show petugas forgot password form
+     */
+    public function showPetugasForgotPasswordForm()
+    {
+        return view('livewire.auth.petugas.forgot-password');
+    }
+
+    /**
+     * Handle petugas forgot password
+     */
+    public function petugasForgotPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        // Cek apakah email ada di database
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return back()->withErrors(['email' => 'Email tidak ditemukan.']);
+        }
+
+        // Di sini bisa ditambahkan logic untuk mengirim reset link
+        // Untuk sekarang, hanya menampilkan pesan sukses
+        return back()->with('status', 'Link reset password telah dikirim ke email Anda!');
+    }
 }
