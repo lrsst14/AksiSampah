@@ -12,6 +12,8 @@ Route::post('/login', [LoginRegisterController::class, 'wargaLogin'])->name('log
 // Petugas: rute login petugas (placeholder untuk saat ini)
 Route::get('/petugas/login', [LoginRegisterController::class, 'showPetugasForm'])->name('petugas.login');
 Route::post('/petugas/login', [LoginRegisterController::class, 'petugasLogin'])->name('petugas.login.store');
+Route::get('/petugas/register', [LoginRegisterController::class, 'showPetugasRegisterForm'])->name('petugas.register');
+Route::post('/petugas/register', [LoginRegisterController::class, 'petugasRegister'])->name('petugas.register.store');
 
 Route::get('/', function () {
     return view('welcome');

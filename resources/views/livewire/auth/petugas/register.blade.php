@@ -2,10 +2,10 @@
 
 @section('content')
 
-<!-- Tombol Login Petugas -->
+<!-- Tombol Login Warga -->
 <div class="position-absolute top-0 end-0 p-4">
-    <a href="{{ route('petugas.login') }}" class="btn d-flex align-items-center gap-2 shadow-sm" style="background-color:#ffff;">
-        <i class="bi bi-box-arrow-in-right"></i> Login Petugas
+    <a href="{{ route('login') }}" class="btn d-flex align-items-center gap-2 shadow-sm" style="background-color:#ffff;">
+        <i class="bi bi-box-arrow-in-right"></i> Login Warga
     </a>
 </div>
 
@@ -20,17 +20,17 @@
         </div>
         <!-- Tabs Login / Register -->
         <div class="d-flex justify-content-center mb-6 gap-4" style="margin-top: -30px;">
-            <a href="{{ route('login') }}" class="text-secondary text-decoration-none fw-bold">
+            <a href="{{ route('petugas.login') }}" class="text-secondary text-decoration-none fw-bold">
                 Login
             </a>
 
-            <a href="{{ route('register') }}" class="text-secondary text-decoration-none fw-bold">
+            <a href="{{ route('petugas.register') }}" class="text-secondary text-decoration-none fw-bold">
                 Register
             </a>
         </div>
         <br>
-        <!-- Form Register -->
-        <form method="POST" action="{{ route('register.store') }}">
+        <!-- Form Register Petugas -->
+        <form method="POST" action="{{ route('petugas.register.store') }}">
             @csrf
 
             @if($errors->any())
@@ -42,7 +42,7 @@
 
             <div class="mb-3">
                 <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" 
-                       placeholder="Nama Lengkap" value="{{ old('name') }}" required autofocus>
+                       placeholder="Nama Lengkap Petugas" value="{{ old('name') }}" required autofocus>
                 @error('name')
                     <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
@@ -50,7 +50,7 @@
 
             <div class="mb-3">
                 <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" 
-                       placeholder="Email Anda" value="{{ old('email') }}" required>
+                       placeholder="Email Petugas" value="{{ old('email') }}" required>
                 @error('email')
                     <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
@@ -78,7 +78,7 @@
 
             <div class="text-center">
                 <span class="text-muted">Sudah punya akun?</span>
-                <a href="{{ route('login') }}" class="text-muted text-decoration-none">
+                <a href="{{ route('petugas.login') }}" class="text-muted text-decoration-none">
                     Login di sini
                 </a>
             </div>

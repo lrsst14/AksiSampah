@@ -60,11 +60,19 @@ class LoginRegisterController extends Controller
     }
 
     /**
-     * Show petugas form (optional)
+     * Show petugas form
      */
     public function showPetugasForm()
     {
-        return view('livewire.auth.warga.login');
+        return view('livewire.auth.petugas.login');
+    }
+
+    /**
+     * Show petugas register form
+     */
+    public function showPetugasRegisterForm()
+    {
+        return view('livewire.auth.petugas.register');
     }
 
     /**
@@ -83,5 +91,26 @@ class LoginRegisterController extends Controller
         }
 
         return back()->withErrors(['email' => 'Credentials not match our records.']);
+    }
+
+    /**
+     * Handle petugas registration
+     */
+    public function petugasRegister(Request $request)
+    {
+        $data = $request->validate([
+            'name' => ['required','string','max:255'],
+            'email' => ['required','string','email','max:255','unique:users'],
+            'password' => ['required','string','min:8','confirmed'],
+        ]);
+
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
+
+        Auth::login($user);
+        return redirect()->intended('/admin');
     }
 }
