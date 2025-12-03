@@ -2,10 +2,10 @@
 
 @section('content')
 
-<!-- Tombol Login Petugas -->
+<!-- Tombol Login Warga -->
 <div class="position-absolute top-0 end-0 p-4">
-    <a href="{{ route('petugas.login') }}" class="btn d-flex align-items-center gap-2 shadow-sm" style="background-color:#ffff;">
-        <i class="bi bi-box-arrow-in-right"></i> Login Petugas
+    <a href="{{ route('login') }}" class="btn d-flex align-items-center gap-2 shadow-sm" style="background-color:#ffff;">
+        <i class="bi bi-box-arrow-in-right"></i> Login Warga
     </a>
 </div>
 
@@ -20,12 +20,12 @@
         </div>
         <!-- Title -->
         <div class="text-center mb-4">
-            <h5 class="fw-bold text-secondary">Reset Password</h5>
+            <h5 class="fw-bold text-secondary">Reset Password Petugas</h5>
             <p class="text-muted small">Silakan masukkan password baru Anda</p>
         </div>
         <br>
-        <!-- Form Reset Password -->
-        <form method="POST" action="{{ route('password.update') }}">
+        <!-- Form Reset Password Petugas -->
+        <form method="POST" action="{{ route('petugas.password.update') }}">
             @csrf
             <!-- Token -->
             <input type="hidden" name="token" value="{{ request()->route('token') }}">
@@ -46,7 +46,7 @@
 
             <div class="mb-3">
                 <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" 
-                       placeholder="Email Anda" value="{{ request('email') ?? old('email') }}" required autofocus>
+                       placeholder="Email Petugas" value="{{ request('email') ?? old('email') }}" required autofocus>
                 @error('email')
                     <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
@@ -74,8 +74,8 @@
 
             <div class="text-center">
                 <span class="text-muted">Ingat password Anda?</span>
-                <a href="{{ route('login') }}" class="text-muted text-decoration-none">
-                    Login di sini
+                <a href="{{ route('petugas.login') }}" class="text-muted text-decoration-none">
+                    Login Petugas
                 </a>
             </div>
         </form>

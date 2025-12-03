@@ -21,6 +21,11 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+// Preview route for petugas dashboard
+Route::get('/dashboardpetugas', function () {
+    return view('dashboardpetugas');
+});
+
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
