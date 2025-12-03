@@ -39,7 +39,7 @@
         <div class="tab-pane fade show active" id="daftar" role="tabpanel" aria-labelledby="daftar-tab">
             <h3 class="text-center mb-4" style="font-family:'poppins'; font-weight: bold;">Daftar Laporan Masuk</h3>
 
-            <div class="card mb-4" style="border-radius:12px;">
+            <div class="card mb-4" style="border-radius:12px;background-color:#F4F7F2;">
                 <div class="card-body">
                     <h6 class="mb-3"style="font-family:'poppins';">Prioritas : Menunggu Verifikasi</h6>
 
@@ -104,7 +104,7 @@
                 </div>
             </div>
 
-            <div class="card mb-5" style="border-radius:12px;">
+            <div class="card mb-5" style="border-radius:12px;background-color:#F4F7F2">
                 <div class="card-body">
                     <h6 class="mb-3" style="font-family:'poppins';">Semua Laporan</h6>
 
@@ -143,7 +143,7 @@
             <h3 class="text-center mb-4" style="font-family:'poppins'; font-weight: bold;">Pengaturan Jadwal Pengangkutan</h3>
 
             <!-- Top Section: Form -->
-            <div class="card mb-4" style="border-radius:12px; background:#ffff;">
+            <div class="card mb-4" style="border-radius:12px; background:#f4f7f2;">
                 <div class="card-body p-4">
 
                     <form id="addScheduleForm">
@@ -196,12 +196,12 @@
             </div>
 
             <!-- Bottom Section: Table -->
-            <div class="card" style="border-radius:12px;">
+            <div class="card" style="border-radius:12px;background-color:#f4f7f2">
                 <div class="card-body">
-                    <div class="table-responsive">
+                    <div class="table-responsive" style="background-color: #F4F7F2;">
                         <table class="table table-borderless align-middle">
                             <thead>
-                                <tr class="text-muted small" style="text-align: center; background: #f0f0f0;">
+                                <tr class="text-muted small" style="text-align: center; background: #f4f7f2">
                                     <th style="text-align: left;">Lokasi</th>
                                     <th style="font-family:'poppins';">Tanggal</th>
                                     <th style="font-family:'poppins';">Waktu</th>
