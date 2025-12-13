@@ -6,7 +6,7 @@
     <div class="container-fluid">
         <div class="row align-items-center">
             <div class="col-1 d-flex align-items-center">
-                <img src="{{ asset('img/Gemini_Generated_Image_ckcuywckcuywckcu-removebg-preview.png') }}" alt="Logo" style="width:100px; height:100px; border-radius:50%; object-fit:cover;">
+                <img src="{{ asset('img/logo.png') }}" alt="Logo" style="width:100px; height:100px; border-radius:50%; object-fit:cover;">
             </div>
             <div class="col-8">
                 <!-- Tabs using nav-underline as requested -->
