@@ -22,9 +22,6 @@ Route::view('/dashboardpetugas', 'dashboardpetugas')->name('petugas.dashboard');
 
 Route::view('/petugas/daftar-laporan', 'daftar-laporan')->name('petugas.daftar');
 Route::view('/petugas/jadwal-pengangkutan', 'jadwal-pengangkutan')->name('petugas.jadwal');
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
