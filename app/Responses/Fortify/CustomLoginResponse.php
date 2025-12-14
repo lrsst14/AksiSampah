@@ -2,6 +2,7 @@
 
 namespace App\Responses\Fortify;
 
+use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\Contracts\LoginResponse;
 
 class CustomLoginResponse implements LoginResponse
@@ -15,7 +16,7 @@ class CustomLoginResponse implements LoginResponse
     public function toResponse($request)
     {
         // Asumsi ada kolom 'role' di tabel users dengan nilai 'warga' atau 'petugas'
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'petugas') {
             return redirect()->route('petugas.dashboard');
