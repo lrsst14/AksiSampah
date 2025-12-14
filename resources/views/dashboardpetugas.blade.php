@@ -2,7 +2,7 @@
 
 @section('content')
 
-<header class="petugas-header" style="background-color:#ffff;">
+<header class="petugas-header" style="background-color:#fce2c9;">
     <div class="container-fluid">
         <div class="row align-items-center">
             <div class="col-1 d-flex align-items-center">
