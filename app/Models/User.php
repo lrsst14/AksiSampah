@@ -13,7 +13,6 @@ class User extends Authenticatable
     use HasFactory, Notifiable, TwoFactorAuthenticatable;
 
     protected $table = 'users';
-    protected $primaryKey = 'id_users';
     public $incrementing = true;
     protected $keyType = 'int';
 

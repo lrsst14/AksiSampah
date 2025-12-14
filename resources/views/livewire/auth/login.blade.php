@@ -10,25 +10,15 @@
 </div>
 
 <div class="d-flex justify-content-center align-items-center" style="min-height:100vh;">
-    <div class="card shadow p-4" style="width: 420px; background:#ffff">
+    <div class="card shadow p-3" style="width: 420px; background:#ffffff">
         
         <!-- Logo -->
-        <div class="text-center mb-4">
+        <div class="text-center mb-2">
             <div class="mx-auto d-flex justify-content-center align-items-center">
                 <img src="{{ asset('img/logo.png') }}" alt="Logo" style="width: 230px; height: auto; object-fit: contain; margin-top:-20px; align-items:center;">
             </div>
+            <h3 class="mt-1 fw-bold" style="color: #598665;">MASUK</h3>
         </div>
-        <!-- Tabs Login / Register -->
-        <div class="d-flex justify-content-center mb-6 gap-4" style="margin-top: -30px;">
-            <a href="{{ route('login') }}"class=" text-secondary text-decoration-none fw-bold" ">
-                Login
-            </a>
-
-            <a href="{{ route('register') }}" class="text-secondary text-decoration-none fw-bold">
-                Register
-            </a>
-        </div>
-        <br>
         <!-- Form Login -->
         <form method="POST" action="{{ route('login.store') }}">
             @csrf
@@ -56,56 +46,21 @@
                 @enderror
             </div>
 
-            <button type="submit" class="btn w-100 shadow-sm mb-2" style="background-color: d7e2d6;">
+            <button type="submit" class="btn w-100 shadow-sm mb-2" style="background-color: #598665; color: white;">
                 Login
             </button>
 
             <div class="text-center">
-                <a href="{{ route('password.request') }}" class="text-muted text-decoration-none">
-                    Forgot Password ?
+                <span class="text-muted">Belum punya akun?</span>
+                <a href="{{ route('register') }}" class="text-primary text-decoration-none">
+                    Daftar di sini
+                </a>
+                <br>
+                <a href="{{ route('password.request') }}" class="text-danger text-decoration-none">
+                    Lupa Sandi?
                 </a>
             </div>
         </form>
-
-        <?php
-
-        use Livewire\Volt\Component;
-
-        new class extends Component {
-            public string $email = '';
-            public string $password = '';
-            public bool $remember = false;
-
-            public function login() {
-                $this->validate([
-                    'email' => 'required|string|email',
-                    'password' => 'required|string',
-                ]);
-
-                if (! Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
-                    $this->addError('email', 'The provided credentials do not match our records.');
-                    return;
-                }
-
-                return redirect()->intended('/dashboard');
-            }
-        }; ?>
-
-        <div>
-            <flux:field>
-                <flux:input wire:model="email" type="email" label="Email" />
-            </flux:field>
-
-            <flux:field>
-                <flux:input wire:model="password" type="password" label="Password" />
-            </flux:field>
-
-            <flux:checkbox wire:model="remember" label="Remember me" />
-
-            <flux:spacer />
-
-            <flux:button wire:click="login" variant="primary">Login</flux:button>
-        </div>
     </div>
 </div>
 
