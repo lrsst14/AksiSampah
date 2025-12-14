@@ -48,3 +48,21 @@ Route::middleware(['auth'])->group(function () {
         )
         ->name('two-factor.show');
 });
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('dashboardwarga', function () {
+        return view('dashboardwarga');
+    })->name('warga.dashboard');
+});
+
+// tampilkan form laporan
+Route::get('/warga/laporan', function () {
+    return view('laporanwarga');
+})->name('warga.laporan');
+
+// terima submit laporan (dummy)
+Route::post('/warga/laporan', function () {
+    return redirect()
+        ->route('warga.dashboard')
+        ->with('success', 'Laporan sampah berhasil dikirim dan akan diproses petugas.');
+})->name('warga.laporan.store');

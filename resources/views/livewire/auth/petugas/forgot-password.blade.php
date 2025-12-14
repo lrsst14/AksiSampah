@@ -15,7 +15,7 @@
         <!-- Logo -->
         <div class="text-center mb-4">
             <div class="mx-auto d-flex justify-content-center align-items-center">
-                <img src="{{ asset('img/Gemini_Generated_Image_ckcuywckcuywckcu-removebg-preview.png') }}" alt="Logo" style="width: 230px; height: auto; object-fit: contain; margin-top:-20px; align-items:center;">
+                <img src="{{ asset('img/logo.png') }}" alt="Logo" style="width: 230px; height: auto; object-fit: contain; margin-top:-20px; align-items:center;">
             </div>
         </div>
         <!-- Title -->
