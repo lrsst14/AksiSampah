@@ -21,10 +21,14 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-// Preview route for petugas dashboard
-Route::get('/dashboardpetugas', function () {
-    return view('dashboardpetugas');
-});
+// Petugas dashboard (render dashboard view)
+Route::view('/dashboardpetugas', 'dashboardpetugas')->name('petugas.dashboard');
+
+// Petugas separate pages
+Route::view('/petugas/daftar-laporan', 'daftar-laporan')->name('petugas.daftar');
+Route::view('/petugas/jadwal-pengangkutan', 'jadwal-pengangkutan')->name('petugas.jadwal');
+
+// (dashboardpetugas view exists but routes redirect to separate pages)
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
