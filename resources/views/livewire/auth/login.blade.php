@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('content')
@@ -67,5 +66,47 @@
                 </a>
             </div>
         </form>
+
+        <?php
+
+        use Livewire\Volt\Component;
+
+        new class extends Component {
+            public string $email = '';
+            public string $password = '';
+            public bool $remember = false;
+
+            public function login() {
+                $this->validate([
+                    'email' => 'required|string|email',
+                    'password' => 'required|string',
+                ]);
+
+                if (! Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
+                    $this->addError('email', 'The provided credentials do not match our records.');
+                    return;
+                }
+
+                return redirect()->intended('/dashboard');
+            }
+        }; ?>
+
+        <div>
+            <flux:field>
+                <flux:input wire:model="email" type="email" label="Email" />
+            </flux:field>
+
+            <flux:field>
+                <flux:input wire:model="password" type="password" label="Password" />
+            </flux:field>
+
+            <flux:checkbox wire:model="remember" label="Remember me" />
+
+            <flux:spacer />
+
+            <flux:button wire:click="login" variant="primary">Login</flux:button>
+        </div>
     </div>
 </div>
+
+@endsection

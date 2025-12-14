@@ -66,3 +66,9 @@ Route::post('/warga/laporan', function () {
         ->route('warga.dashboard')
         ->with('success', 'Laporan sampah berhasil dikirim dan akan diproses petugas.');
 })->name('warga.laporan.store');
+
+Volt::route('/login', 'auth.login')->name('login');
+Volt::route('/register', 'auth.register')->name('register');
+Volt::route('/confirm-password', 'auth.confirm-password')->name('password.confirm');
+
+// Add more routes as needed for your app

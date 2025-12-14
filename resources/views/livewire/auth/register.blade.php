@@ -83,6 +83,54 @@
                 </a>
             </div>
         </form>
+
+        <?php
+
+        use Livewire\Volt\Component;
+        use Illuminate\Validation\Rules\Password;
+
+        new class extends Component {
+            public string $name = '';
+            public string $email = '';
+            public string $password = '';
+            public string $password_confirmation = '';
+
+            public function register() {
+                $validated = $this->validate([
+                    'name' => 'required|string|max:255',
+                    'email' => 'required|string|email|max:255|unique:users',
+                    'password' => ['required', 'string', Password::defaults(), 'confirmed'],
+                ]);
+
+                $user = User::create($validated);
+
+                Auth::login($user);
+
+                return redirect('/dashboard');
+            }
+        }; ?>
+
+        <div>
+            <flux:field>
+                <flux:input wire:model="name" label="Name" />
+            </flux:field>
+
+            <flux:field>
+                <flux:input wire:model="email" type="email" label="Email" />
+            </flux:field>
+
+            <flux:field>
+                <flux:input wire:model="password" type="password" label="Password" />
+            </flux:field>
+
+            <flux:field>
+                <flux:input wire:model="password_confirmation" type="password" label="Confirm Password" />
+            </flux:field>
+
+            <flux:spacer />
+
+            <flux:button wire:click="register" variant="primary">Register</flux:button>
+        </div>
     </div>
 </div>
 
