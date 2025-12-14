@@ -26,6 +26,7 @@ Route::view('/petugas/jadwal-pengangkutan', 'jadwal-pengangkutan')->name('petuga
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 
+    Volt::route('dashboard', 'dashboard')->name('dashboard');
     Volt::route('settings/profile', 'settings.profile')->name('profile.edit');
     Volt::route('settings/password', 'settings.password')->name('user-password.edit');
     Volt::route('settings/appearance', 'settings.appearance')->name('appearance.edit');
