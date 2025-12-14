@@ -5,11 +5,8 @@ use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
 use App\Http\Controllers\Auth\LoginRegisterController;
 
-// Warga: rute kustom login/register
 Route::get('/login', [LoginRegisterController::class, 'showWargaForm'])->name('login');
 Route::post('/login', [LoginRegisterController::class, 'wargaLogin'])->name('login.store');
-
-// Petugas: rute login petugas (placeholder untuk saat ini)
 Route::get('/petugas/login', [LoginRegisterController::class, 'showPetugasForm'])->name('petugas.login');
 Route::post('/petugas/login', [LoginRegisterController::class, 'petugasLogin'])->name('petugas.login.store');
 Route::get('/petugas/register', [LoginRegisterController::class, 'showPetugasRegisterForm'])->name('petugas.register');
@@ -18,18 +15,13 @@ Route::get('/petugas/forgot-password', [LoginRegisterController::class, 'showPet
 Route::post('/petugas/forgot-password', [LoginRegisterController::class, 'petugasForgotPassword'])->name('petugas.password.email');
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('register');
 })->name('home');
 
-// Petugas dashboard (render dashboard view)
 Route::view('/dashboardpetugas', 'dashboardpetugas')->name('petugas.dashboard');
 
-// Petugas separate pages
 Route::view('/petugas/daftar-laporan', 'daftar-laporan')->name('petugas.daftar');
 Route::view('/petugas/jadwal-pengangkutan', 'jadwal-pengangkutan')->name('petugas.jadwal');
-
-// (dashboardpetugas view exists but routes redirect to separate pages)
-
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
@@ -59,14 +51,16 @@ Route::middleware(['auth'])->group(function () {
     })->name('warga.dashboard');
 });
 
-// tampilkan form laporan
 Route::get('/warga/laporan', function () {
     return view('laporanwarga');
 })->name('warga.laporan');
 
-// terima submit laporan (dummy)
 Route::post('/warga/laporan', function () {
     return redirect()
         ->route('warga.dashboard')
         ->with('success', 'Laporan sampah berhasil dikirim dan akan diproses petugas.');
 })->name('warga.laporan.store');
+
+Volt::route('/login', 'auth.login')->name('login');
+Volt::route('/register', 'auth.register')->name('register');
+Volt::route('/confirm-password', 'auth.confirm-password')->name('password.confirm');
