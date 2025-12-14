@@ -37,6 +37,8 @@
 /* defaults */
 .ringkasan-widget { width: min(160px, 30vw); max-width:160px; aspect-ratio:1/1; position: relative; display:flex; align-items:center; justify-content:center; }
 .ringkasan-widget canvas { width: 100% !important; height: 100% !important; display:block; }
+/* hide HTML overlay since we render centered text inside the canvas for pixel-perfect centering */
+#ringkasanCenter { display: none; }
 </style>
 
 @if(session('success'))
@@ -462,7 +464,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
                     var modal = bootstrap.Modal.getInstance(jadwalModal);
                     modal.hide();
-                    alert('Jadwal disimpan (demo).');
+                    alert('Jadwal disimpan.');
                 });
             }
         }
@@ -490,6 +492,34 @@ document.addEventListener('DOMContentLoaded', function(){
         const ringData = [10, 8, 12, 4];
         const ringLabels = ['Menunggu Verifikasi','Diproses','Terverifikasi','Ditolak/Invalid'];
 
+        // draw centered text inside doughnut using a Chart.js plugin for perfect centering
+        const centerTextPlugin = {
+            id: 'centerText',
+            afterDraw(chart) {
+                const {ctx, chartArea: {left, right, top, bottom}} = chart;
+                const cfg = (chart.options && chart.options.plugins && chart.options.plugins.centerText) || {};
+                const centerX = (left + right) / 2;
+                const centerY = (top + bottom) / 2;
+                ctx.save();
+                // Line 1 (big number)
+                ctx.fillStyle = cfg.color || '#222';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                const largeSize = cfg.fontSize || Math.round(Math.min(chart.width * 0.12, 28));
+                ctx.font = `bold ${largeSize}px Poppins, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial`;
+                ctx.fillText(cfg.line1 || '', centerX, centerY - (cfg.lineSpacing || 6));
+                // Line 2 (small label)
+                const smallSize = cfg.subFontSize || Math.round(Math.max(11, largeSize * 0.45));
+                ctx.font = `${smallSize}px Poppins, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial`;
+                ctx.fillStyle = cfg.subColor || '#6c757d';
+                ctx.fillText(cfg.line2 || '', centerX, centerY + (cfg.lineSpacing || 12));
+                ctx.restore();
+            }
+        };
+
+        // register plugin first so it's active on initial draw
+        Chart.register(centerTextPlugin);
+
         const ringChart = new Chart(ringCtx, {
             type: 'doughnut',
             data: {
@@ -505,10 +535,11 @@ document.addEventListener('DOMContentLoaded', function(){
                 maintainAspectRatio: false,
                 cutout: '65%',
                 plugins: {
+                    centerText: { line1: String(ringData.reduce((a,b)=>a+b,0)), line2: 'Total', fontSize: 24, subFontSize: 12, lineSpacing: 8 },
                     legend: { display: false },
                     tooltip: { callbacks: { label: function(ctx){
                         const value = ctx.raw;
-                        const total = ctx.chart._metasets ? ctx.chart._metasets[0].total : ctx.dataset.data.reduce((a,b)=>a+b,0);
+                        const total = ctx.dataset.data.reduce((a,b)=>a+b,0);
                         const pct = total ? Math.round((value/total)*100) : 0;
                         return ctx.label + ': ' + value + ' (' + pct + '%)';
                     } } }
