@@ -108,10 +108,11 @@ class LoginRegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'role' => 'petugas',
         ]);
 
         Auth::login($user);
-        return redirect()->intended('/admin');
+        return redirect()->route('petugas.dashboard');
     }
 
     /**

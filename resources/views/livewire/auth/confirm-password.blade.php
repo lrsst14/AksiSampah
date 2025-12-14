@@ -26,3 +26,36 @@
         </form>
     </div>
 </x-layouts.auth>
+
+<?php
+
+use Livewire\Volt\Component;
+
+new class extends Component {
+    public string $password = '';
+
+    public function confirm() {
+        $this->validate([
+            'password' => 'required|string',
+        ]);
+
+        if (! Hash::check($this->password, Auth::user()->password)) {
+            $this->addError('password', 'The password is incorrect.');
+            return;
+        }
+
+        session(['auth.password_confirmed_at' => time()]);
+
+        return redirect()->intended();
+    }
+}; ?>
+
+<div>
+    <flux:field>
+        <flux:input wire:model="password" type="password" label="Password" />
+    </flux:field>
+
+    <flux:spacer />
+
+    <flux:button wire:click="confirm" variant="primary">Confirm</flux:button>
+</div>

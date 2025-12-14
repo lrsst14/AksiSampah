@@ -20,13 +20,15 @@
         </div>
         <!-- Title -->
         <div class="text-center mb-4">
-            <h5 class="fw-bold text-secondary">Forgot Password Petugas</h5>
-            <p class="text-muted small">Masukkan email Anda untuk menerima link reset password</p>
+            <h5 class="fw-bold text-secondary">Reset Password Petugas</h5>
+            <p class="text-muted small">Silakan masukkan password baru Anda</p>
         </div>
         <br>
-        <!-- Form Forgot Password Petugas -->
-        <form method="POST" action="{{ route('petugas.password.email') }}">
+        <!-- Form Reset Password Petugas -->
+        <form method="POST" action="{{ route('petugas.password.update') }}">
             @csrf
+            <!-- Token -->
+            <input type="hidden" name="token" value="{{ request()->route('token') }}">
 
             @if(session('status'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -44,20 +46,36 @@
 
             <div class="mb-3">
                 <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" 
-                       placeholder="Email Petugas" value="{{ old('email') }}" required autofocus>
+                       placeholder="Email Petugas" value="{{ request('email') ?? old('email') }}" required autofocus>
                 @error('email')
                     <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
             </div>
 
+            <div class="mb-3">
+                <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
+                       placeholder="Password Baru" required>
+                @error('password')
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="mb-3">
+                <input type="password" name="password_confirmation" class="form-control @error('password_confirmation') is-invalid @enderror"
+                       placeholder="Konfirmasi Password Baru" required>
+                @error('password_confirmation')
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                @enderror
+            </div>
+
             <button type="submit" class="btn w-100 shadow-sm mb-2" style="background-color: #d7e2d6;">
-                Kirim Link Reset Password
+                Reset Password
             </button>
 
             <div class="text-center">
                 <span class="text-muted">Ingat password Anda?</span>
                 <a href="{{ route('petugas.login') }}" class="text-muted text-decoration-none">
-                    Login di sini
+                    Login Petugas
                 </a>
             </div>
         </form>
