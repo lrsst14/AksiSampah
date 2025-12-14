@@ -26,7 +26,15 @@ Route::view('/petugas/jadwal-pengangkutan', 'jadwal-pengangkutan')->name('petuga
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 
-    Volt::route('dashboard', 'main-dashboard')->name('dashboard');
+    Route::get('dashboard', function () {
+        $user = auth()->user();
+        if ($user->role === 'warga') {
+            return view('dashboardwarga');
+        } elseif ($user->role === 'petugas') {
+            return view('dashboardpetugas');
+        }
+        return redirect('/');
+    })->name('dashboard');
     Volt::route('settings/profile', 'settings.profile')->name('profile.edit');
     Volt::route('settings/password', 'settings.password')->name('user-password.edit');
     Volt::route('settings/appearance', 'settings.appearance')->name('appearance.edit');
