@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
 use App\Http\Controllers\Auth\LoginRegisterController;
@@ -27,7 +28,7 @@ Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 
     Route::get('dashboard', function () {
-        $user = auth()->user();
+        $user = Auth::user();
         if ($user->role === 'warga') {
             return view('dashboardwarga');
         } elseif ($user->role === 'petugas') {
