@@ -1,12 +1,13 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
+namespace Tests\Feature;
+
+use Tests\TestCase;
 
 class DashboardTest extends TestCase
 {
     public function testExample()
     {
-        // Example assertion: replace with your actual test logic
         $this->assertTrue(true);
     }
 }
