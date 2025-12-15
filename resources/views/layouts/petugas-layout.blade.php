@@ -39,10 +39,27 @@
     }
 
     .petugas-tabs {
-        background-color: #fce2c9;
+        background-color: white;
         padding: 12px 0;
         margin-top: var(--header-height);
     }
+
+    /* Navbar color and link styles */
+    .navbar { background-color:whitesmoke; }
+    .navbar .nav-link, .navbar .nav-link i, .navbar .navbar-brand { color: #111; }
+    .navbar .nav-link.active { color: #111; font-weight: 700; }
+    .navbar .nav-link:hover { color: black; }
+    .navbar .navbar-toggler { border-color: rgba(0,0,0,0.08); }
+
+    /* Make the hamburger (navbar-toggler-icon) black on white header */
+    .navbar .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    }
+
+    /* User avatar and name styles in navbar */
+    .navbar .user-name { color: #111; font-weight: 600; }
+    /* Make avatar circular and remove border/shadow */
+    .navbar .user-avatar { border: none; box-shadow: none; border-radius: 50%; height:36px; width:36px; object-fit:cover; }
 
     /* Adjust sidebar / main top offsets depending on whether small tabs are visible */
     .sidebar {
@@ -85,7 +102,7 @@
             left: 0;
             width: 100%;
             z-index: 1040;
-            background: #fce2c9;
+            background:whitesmoke;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
         .navbar .collapse .nav-link { padding: 0.75rem 1rem; }
@@ -93,21 +110,62 @@
 
     @media (max-width: 575.98px) {
         footer { margin-left: 0 !important; width: 100% !important; padding-left: 1rem !important; padding-right: 1rem !important; }
+
+        /* Hide the fixed sidebar on small screens so it doesn't cover content */
+        .sidebar { display: none !important; }
+
+        /* Ensure main content occupies full width on mobile */
+        .main-content { margin-left: 0 !important; padding-left: 1rem !important; padding-right: 1rem !important; }
+
+        /* Stack footer columns and improve tap targets on small screens */
+        footer .container .row { display: flex; flex-direction: column; gap: 1rem; }
+        footer .container .col-md-3 { width: 100%; padding-left: 0; padding-right: 0; }
+        footer .container .col-md-3 h6 { margin-bottom: 0.5rem; }
+        footer .list-unstyled.small li a { display: inline-block; padding: 6px 0; }
+        footer .d-flex.gap-2 a.btn { width: 36px; height: 36px; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
+        footer .text-md-end { text-align: left !important; }
     }
+
+    /* Footer social buttons: thin bordered circular icons (transparent fill) */
+    footer .d-flex.gap-2 a.btn {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: transparent;
+        color: #111;
+        border: 1px solid rgba(0,0,0,0.12);
+        box-shadow: none;
+    }
+    footer .d-flex.gap-2 a.btn:hover { transform: translateY(-1px); background: rgba(0,0,0,0.04); }
 
 </style>
 
 <body style="background-color: #DDE6D1;">
 
     {{-- NAVBAR --}}
-    <nav class="navbar navbar-expand-lg shadow-sm fixed-top" style="background-color: #fce2c9;">
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm fixed-top">
         <div class="container-fluid">
 
             {{-- LOGO --}}
             <img src="{{ asset('img/logo-zoom.png') }}" style="max-height:40px" alt="Logo">
+            {{-- Compact user block for small screens (kept outside collapse so it stays on one line) --}}
+            <div class="d-flex align-items-center gap-2 ms-auto d-lg-none">
+                <img src="{{ asset('img/avatar.png') }}" height="36" alt="Avatar" class="user-avatar">
+                <span class="d-none d-sm-inline user-name">Nama Petugas</span>
+                <form method="POST" action="{{ route('logout') }}" class="d-inline ms-2">
+                    @csrf
+                    <button type="submit" aria-label="Logout" title="Logout" class="p-0 text-dark text-decoration-none" style="border:none; background:transparent;">
+                        <i class="fa fa-right-from-bracket"></i>
+                    </button>
+                </form>
+            </div>
 
             {{-- TOGGLE --}}
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPetugas">
+            <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPetugas" aria-controls="navbarPetugas" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -135,11 +193,17 @@
                 </ul>
 
                 {{-- USER --}}
-                <div class="d-flex align-items-center gap-2 ms-lg-3 justify-content-center">
-                    <img src="https://ui-avatars.com/api/?name=Petugas" class="rounded-circle" height="36">
-                    <span class="d-none d-lg-inline">Petugas</span>
-                    <a href="{{ route('profile.edit') }}" class="btn btn-outline-dark btn-sm ms-2">Profile</a>
-                    <a href="{{ route('logout') }}" class="btn btn-outline-danger btn-sm ms-2">Logout</a>
+                <div class="d-flex align-items-center gap-2 ms-lg-3 justify-content-center d-none d-lg-flex">
+                    <img src="{{ asset('img/avatar.png') }}" height="36" alt="Avatar" class="user-avatar">
+                    <span class="d-none d-lg-inline user-name">Nama Petugas</span>
+
+                    {{-- Logout using a POST form to match Laravel's logout route --}}
+                    <form method="POST" action="{{ route('logout') }}" class="d-inline ms-2">
+                        @csrf
+                        <button type="submit" aria-label="Logout" title="Logout" class="p-0 text-dark text-decoration-none" style="border:none; background:transparent;">
+                            <i class="fa fa-right-from-bracket"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -191,44 +255,44 @@
     </div>
 
     {{-- FOOTER --}}
-    <footer class="bg-dark text-white mt-5 py-5" style="margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); padding-left: var(--sidebar-gap);">
+    <footer class="text-black mt-5 py-5" style="background:whitesmoke; margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); padding-left: var(--sidebar-gap);">
         <div class="container">
             <div class="row">
                 <div class="col-md-3 mb-4">
-                    <h6 class="fw-bold mb-3 text-white">Tentang AksiSampah</h6>
-                    <p class="small text-light">AksiSampah adalah platform digital untuk memudahkan pelaporan dan penjadwalan pengangkutan sampah komunitas Anda.</p>
+                    <h6 class="fw-bold mb-3 text-black">Tentang AksiSampah</h6>
+                    <p class="small text-black">AksiSampah adalah platform digital untuk memudahkan pelaporan dan penjadwalan pengangkutan sampah komunitas Anda.</p>
                 </div>
                 <div class="col-md-3 mb-4">
-                    <h6 class="fw-bold mb-3 text-white">Menu Cepat</h6>
+                    <h6 class="fw-bold mb-3 text-black">Menu Cepat</h6>
                     <ul class="list-unstyled small">
-                        <li><a href="{{ route('petugas.dashboard') }}" class="text-decoration-none text-light">Dashboard-Petugas</a></li>
-                        <li><a href="{{ route('petugas.daftar') }}" class="text-decoration-none text-light">Daftar Laporan Masuk</a></li>
-                        <li><a href="{{ route('petugas.jadwal') }}" class="text-decoration-none text-light">Jadwal Pengangkutan</a></li>
+                        <li><a href="{{ route('petugas.dashboard') }}" class="text-decoration-none text-black">Dashboard-Petugas</a></li>
+                        <li><a href="{{ route('petugas.daftar') }}" class="text-decoration-none text-black">Daftar Laporan Masuk</a></li>
+                        <li><a href="{{ route('petugas.jadwal') }}" class="text-decoration-none text-black">Jadwal Pengangkutan</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3 mb-4">
-                    <h6 class="fw-bold mb-3 text-white">Hubungi Kami</h6>
-                    <p class="small text-light mb-1"><i class="fa fa-phone me-2"></i>+62 812 3456 7890</p>
-                    <p class="small text-light mb-1"><i class="fa fa-envelope me-2"></i>info@aksisampah.id</p>
-                    <p class="small text-light"><i class="fa fa-map-marker me-2"></i>Jl. Kebersihan No. 1, Kota</p>
+                    <h6 class="fw-bold mb-3 text-black">Hubungi Kami</h6>
+                    <p class="small text-black mb-1"><i class="fa fa-phone me-2"></i>+62 812 3456 7890</p>
+                    <p class="small text-black mb-1"><i class="fa fa-envelope me-2"></i>info@aksisampah.id</p>
+                    <p class="small text-black"><i class="fa fa-map-marker me-2"></i>Jl. Kebersihan No. 1, Kota</p>
                 </div>
                 <div class="col-md-3 mb-4">
-                    <h6 class="fw-bold mb-3 text-white">Ikuti Kami</h6>
+                    <h6 class="fw-bold mb-3 text-black">Ikuti Kami</h6>
                     <div class="d-flex gap-2">
-                        <a href="#" class="btn btn-sm btn-outline-light rounded-circle"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#" class="btn btn-sm btn-outline-light rounded-circle"><i class="fa-brands fa-twitter"></i></a>
-                        <a href="#" class="btn btn-sm btn-outline-light rounded-circle"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#" class="btn btn-sm btn-outline-light rounded-circle"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="#" class="btn btn-sm btn-outline-black rounded-circle"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="btn btn-sm btn-outline-black rounded-circle"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" class="btn btn-sm btn-outline-black rounded-circle"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="btn btn-sm btn-outline-black rounded-circle"><i class="fa-brands fa-youtube"></i></a>
                     </div>
                 </div>
             </div>
             <hr class="bg-secondary">
             <div class="row">
                 <div class="col-md-6">
-                    <p class="small text-light mb-0">&copy; 2025 AksiSampah. Semua hak dilindungi.</p>
+                    <p class="small text-black mb-0">&copy; 2025 AksiSampah. Semua hak dilindungi.</p>
                 </div>
                 <div class="col-md-6 text-md-end">
-                    <p class="small text-light mb-0"><a href="#" class="text-decoration-none text-light">Kebijakan Privasi</a> | <a href="#" class="text-decoration-none text-light">Syarat Layanan</a></p>
+                    <p class="small text-black mb-0"><a href="#" class="text-decoration-none text-black">Kebijakan Privasi</a> | <a href="#" class="text-decoration-none text-black">Syarat Layanan</a></p>
                 </div>
             </div>
         </div>

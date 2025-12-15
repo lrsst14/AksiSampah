@@ -3,7 +3,6 @@
 @section('content')
 
 <style>
-/* Make Jadwal controls and Ringkasan responsive */
 @media (max-width: 767.98px) {
     .jadwal-header { flex-direction: column !important; align-items: flex-start !important; gap: .75rem !important; }
     .jadwal-header .ms-auto { width: 100%; display:flex; gap:.5rem; }
@@ -14,8 +13,6 @@
     .ringkasan-row .flex-grow-1 { width: 100%; }
     .ringkasan-widget { width: 140px; height: 140px; margin-top: .75rem; }
 }
-
-/* Small phones: improve wrapping and sizing */
 @media (max-width: 480px) {
     .ringkasan-row { gap: .75rem; }
     .ringkasan-row h2 { font-size: 1.6rem; }
@@ -26,19 +23,63 @@
     #ringkasanCenter strong { font-size: clamp(14px, 4vw, 20px); }
     .progress { max-width: 90%; margin: .5rem auto; }
 }
-
-/* prevent flex overflow when badges or progress are long */
 .ringkasan-row .flex-grow-1 { min-width: 0; }
 
 @media (max-width: 360px) {
     #ringkasanCenter strong { font-size: 14px; }
 }
 
-/* defaults */
 .ringkasan-widget { width: min(160px, 30vw); max-width:160px; aspect-ratio:1/1; position: relative; display:flex; align-items:center; justify-content:center; }
 .ringkasan-widget canvas { width: 100% !important; height: 100% !important; display:block; }
-/* hide HTML overlay since we render centered text inside the canvas for pixel-perfect centering */
-#ringkasanCenter { display: none; }
+
+/* Show center total and adapt its placement responsively */
+#ringkasanCenter { display: block; pointer-events:none; }
+@media (min-width: 768px) {
+    #ringkasanCenter { position:absolute; top:50%; left:50%; transform: translate(-50%,-50%); }
+}
+@media (max-width:575.98px) {
+    /* On small screens, place total below the chart as a static element */
+    #ringkasanCenter { position: static; transform: none; margin-top: .5rem; text-align:center; }
+    #ringkasanCenter strong { font-size: 18px; display:block; }
+    #ringkasanCenter .small { display:block; color:#6c757d; }
+    .ringkasan-widget { display:flex; flex-direction:column; align-items:center; }
+    .ringkasan-widget canvas { width: min(160px, 40vw) !important; height: auto !important; }
+    /* Make badges easier to tap on mobile and wrap nicely */
+    #ringkasanBadges { display:flex; gap:.5rem; justify-content:center; flex-wrap:wrap; }
+    #ringkasanBadges .badge { padding:.5rem .6rem; font-size:.85rem; }
+    /* Ensure progress bar is full width */
+    .progress { max-width: 100%; }
+}
+
+    @media (max-width:575.98px) {
+        /* compact spacing and font sizes */
+        .container-fluid.py-4 { padding-left: 1rem; padding-right: 1rem; }
+        h3.mb-0 { font-size: 1.25rem; }
+        .card { padding: .85rem; }
+
+        /* Filters: stack and full-width on mobile */
+        .filters-row { display:flex; gap:0.5rem; flex-wrap:wrap; }
+        .filters-row .dropdown, .filters-row .input-group { flex:1 1 100%; }
+        .filters-row .dropdown .btn, .filters-row .input-group .btn { width:100%; }
+
+        /* Chart height reduction for mobile */
+        .chart-container { height: 200px !important; }
+
+        /* Tables -> stacked cards */
+        .table-responsive table thead { display: none; }
+        .table-responsive table tbody tr { display: block; border: 1px solid #e9ecef; border-radius: 8px; margin-bottom: 12px; padding: 8px; background: #fff; }
+        .table-responsive table tbody td { display: flex; justify-content: space-between; padding: 6px 8px; }
+        .table-responsive table tbody td[data-label]::before { content: attr(data-label) ': '; font-weight: 600; color: #6c757d; margin-right: 6px; }
+        .table-responsive table tbody td.action-center { justify-content: flex-end; }
+        .btn.detail-btn { width: 100%; }
+
+        /* Ringkasan: center badges and tighten spacing */
+        #ringkasanBadges { justify-content: center; gap: .5rem; }
+        .ringkasan-widget { margin-top: .5rem; }
+
+        /* Top action button full-width on mobile */
+        .d-flex.gap-2 > a.btn { width: 100%; display:flex; align-items:center; justify-content:center; }
+    }
 </style>
 
 @if(session('success'))
@@ -129,7 +170,6 @@
 
                 <div class="d-flex align-items-center gap-3 ringkasan-row">
                 <div class="flex-grow-1">
-                    <h2 class="fw-bold text-primary mb-1">34 Laporan</h2>
                     <small class="text-muted">Periode: Hari ini &middot; Terakhir diperbarui {{ now()->format('d M Y H:i') }}</small>
 
                     <div class="d-flex gap-2 mt-3" id="ringkasanBadges">
@@ -149,7 +189,7 @@
 
                 <div class="ringkasan-widget">
                     <canvas id="ringkasanChart"></canvas>
-                    <div class="position-absolute top-50 start-50 translate-middle text-center text-dark" id="ringkasanCenter" style="pointer-events:none;">
+                    <div class="position-absolute top-50 start-50 translate-middle text-center text-dark" id="ringkasanCenter" role="status" aria-live="polite" style="pointer-events:none;">
                         <strong id="ringkasanTotal" style="font-size:18px;">34</strong>
                         <div class="small text-muted">Total</div>
                     </div>
@@ -164,20 +204,25 @@
 <div class="mt-4">
 
     <!-- Filters (Status / Lokasi / Jenis Sampah / Search) -->
-    <div class="d-flex gap-2 mb-3">
+    <div class="d-flex gap-2 mb-3 filters-row">
         <div class="dropdown">
             <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">Status</button>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Semua</a></li>
                 <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Menunggu Verifikasi</a></li>
                 <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Diproses</a></li>
+                <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Terverifikasi</a></li>
+                <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Ditolak/Invalid</a></li>
             </ul>
         </div>
         <div class="dropdown">
             <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" style="font-family:'poppins'; ">Lokasi</button>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Semua</a></li>
-                <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Kecamatan A</a></li>
+                <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Lokasi A</a></li>
+                <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Lokasi B</a></li>
+                <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Lokasi C</a></li>
+                <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Lokasi D</a></li>
             </ul>
         </div>
         <div class="dropdown">
@@ -185,6 +230,8 @@
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Semua</a></li>
                 <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Organik</a></li>
+                <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Anorganik</a></li>
+                <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Plastik</a></li>
             </ul>
         </div>
         <div class="ms-auto">
@@ -213,12 +260,12 @@
                     <tbody>
                         @for($i=1;$i<=8;$i++)
                         <tr>
-                            <td style="text-align: center;font-family:'poppins'; ">#LP-2025-0{{ $i }}</td>
-                            <td style="text-align: center ;font-family:'poppins'; ">2025-12-0{{ $i }}</td>
-                            <td style="text-align: center;font-family:'poppins'; ">Jl. Contoh No. {{ $i }}</td>
-                            <td style="text-align: center;font-family:'poppins';">{{ $i % 2 ? 'Plastik' : 'Organik' }}</td>
-                            <td class="action-center" style="display:flex; justify-content:center; align-items:center;">
-                                <button class="btn btn-sm" style="background-color: #d7e2de; font-family:'poppins'; color:#000; padding:6px 10px; border-radius:6px; border:none;" data-bs-toggle="modal" data-bs-target="#updateStatusModal" data-id="#LP-2025-0{{ $i }}" data-status="Menunggu Verifikasi">Lihat Detail</button>
+                            <td data-label="ID Laporan" style="text-align: center;font-family:'poppins'; ">#LP-2025-0{{ $i }}</td>
+                            <td data-label="Tanggal" style="text-align: center ;font-family:'poppins'; ">2025-12-0{{ $i }}</td>
+                            <td data-label="Lokasi" style="text-align: center;font-family:'poppins'; ">Jl. Contoh No. {{ $i }}</td>
+                            <td data-label="Jenis" style="text-align: center;font-family:'poppins';">{{ $i % 2 ? 'Plastik' : 'Organik' }}</td>
+                            <td data-label="Aksi" class="action-center" style="display:flex; justify-content:center; align-items:center;">
+                                <button class="detail-btn btn btn-sm" style="background-color: #d7e2de; font-family:'poppins'; color:#000; padding:6px 10px; border-radius:6px; border:none;" data-bs-toggle="modal" data-bs-target="#updateStatusModal" data-id="#LP-2025-0{{ $i }}" data-status="Menunggu Verifikasi">Lihat Detail</button>
                             </td>
                         </tr>
                         @endfor
@@ -496,6 +543,8 @@ document.addEventListener('DOMContentLoaded', function(){
         const centerTextPlugin = {
             id: 'centerText',
             afterDraw(chart) {
+                // If a DOM overlay for the center exists (for accessibility/responsiveness), don't draw text in canvas
+                if(document.getElementById('ringkasanCenter')) return;
                 const {ctx, chartArea: {left, right, top, bottom}} = chart;
                 const cfg = (chart.options && chart.options.plugins && chart.options.plugins.centerText) || {};
                 const centerX = (left + right) / 2;
