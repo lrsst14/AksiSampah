@@ -19,6 +19,6 @@
         ]
     },
     "composer": {
-        "no-dev": true
+        "noDev": true
     }
 }
