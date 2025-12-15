@@ -13,5 +13,9 @@ WORKDIR /var/www
 COPY . .
 
 RUN composer install --optimize-autoloader --no-interaction --no-scripts
+EXPOSE 8080
 
-CMD ["php-fpm"]
+# Use PHP's built-in web server to listen on port 8080 so Railway can route HTTP traffic.
+# This is a minimal change to make the container serve HTTP; for production consider
+# adding nginx or a process manager.
+CMD ["sh", "-lc", "php -S 0.0.0.0:8080 -t public"]
