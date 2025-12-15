@@ -17,5 +17,8 @@
             "tokenizer",
             "xml"
         ]
+    },
+    "composer": {
+        "no-dev": true
     }
 }
