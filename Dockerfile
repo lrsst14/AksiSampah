@@ -22,6 +22,11 @@ RUN composer install --optimize-autoloader --no-interaction --no-scripts
 
 RUN npm install
 RUN npm run build
+
+RUN php artisan optimize:clear
+RUN php artisan view:clear
+RUN php artisan route:clear
+
 EXPOSE 8080
 
 CMD ["sh", "-lc", "php -S 0.0.0.0:8080 -t public"]
