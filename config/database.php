@@ -60,8 +60,6 @@ return [
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 1009 => env('MYSQL_ATTR_SSL_CA'),
-                1000 => 5,
-                2 => 5,
             ]) : [],
         ],
 
@@ -98,9 +96,6 @@ return [
             'prefix_indexes' => true,
             'search_path' => 'public',
             'sslmode' => 'prefer',
-            'options' => extension_loaded('pdo_pgsql') ? [
-                2 => 5,  // PDO::ATTR_TIMEOUT
-            ] : [],
         ],
 
         'sqlsrv' => [
