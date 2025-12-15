@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
 use App\Http\Controllers\Auth\LoginRegisterController;
@@ -22,13 +23,19 @@ Route::view('/dashboardpetugas', 'dashboardpetugas')->name('petugas.dashboard');
 
 Route::view('/petugas/daftar-laporan', 'daftar-laporan')->name('petugas.daftar');
 Route::view('/petugas/jadwal-pengangkutan', 'jadwal-pengangkutan')->name('petugas.jadwal');
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 
+    Route::get('dashboard', function () {
+        $user = Auth::user();
+        if ($user->role === 'warga') {
+            return view('dashboardwarga');
+        } elseif ($user->role === 'petugas') {
+            return view('dashboardpetugas');
+        }
+        return redirect('/');
+    })->name('dashboard');
     Volt::route('settings/profile', 'settings.profile')->name('profile.edit');
     Volt::route('settings/password', 'settings.password')->name('user-password.edit');
     Volt::route('settings/appearance', 'settings.appearance')->name('appearance.edit');
@@ -63,4 +70,3 @@ Route::post('/warga/laporan', function () {
 
 Volt::route('/login', 'auth.login')->name('login');
 Volt::route('/register', 'auth.register')->name('register');
-Volt::route('/confirm-password', 'auth.confirm-password')->name('password.confirm');
