@@ -10,7 +10,11 @@
         </div>
     </div>
 
-    @if($laporans->count() > 0)
+    @if(session('success'))
+    <script>
+        alert('{{ session('success') }}');
+    </script>
+    @endif
         <div class="row g-4">
             @foreach($laporans as $laporan)
             <div class="col-12">
@@ -26,22 +30,18 @@
                             
                             {{-- Badge Status --}}
                             @php
-                                $statusClass = [
-                                    'menunggu' => 'bg-warning text-dark',
-                                    'diproses' => 'bg-info',
-                                    'selesai' => 'bg-success',
-                                    'ditolak' => 'bg-danger',
-                                ][strtolower($laporan->status)] ?? 'bg-secondary';
+                                $statusText = $laporan->status == 'pending' ? 'Diproses' : ($laporan->status == 'verified' ? 'Selesai' : ucfirst($laporan->status));
+                                $statusClass = $laporan->status == 'pending' ? 'bg-warning text-dark' : ($laporan->status == 'verified' ? 'bg-success' : 'bg-secondary');
                             @endphp
                             <span class="badge {{ $statusClass }} text-uppercase fw-bold p-2">
-                                {{ ucfirst($laporan->status) }}
+                                {{ $statusText }}
                             </span>
                         </div>
 
                         {{-- Detail Laporan --}}
                         <div class="small text-muted mb-3">
                             <p class="mb-1"><i class="fa-solid fa-location-dot me-2"></i> {{ $laporan->lokasi ?? 'Alamat tidak tersedia' }}</p>
-                            <p class="mb-1"><i class="fa-solid fa-phone me-2"></i> {{ $laporan->kontak ?? 'Kontak tidak tersedia' }}</p>
+                            <p class="mb-1"><i class="fa-solid fa-weight-hanging me-2"></i> {{ $laporan->gram ?? 0 }} gram</p>
                             <p class="mb-2">{{ $laporan->deskripsi ?? 'Tidak ada deskripsi.' }}</p>
                         </div>
 

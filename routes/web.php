@@ -35,7 +35,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/warga/riwayat', function () {
     /** @var \App\Models\User $user */
     $user = Auth::user();
-    $laporans = $user->laporans()->where('status', 'verified')->orderBy('created_at', 'desc')->get();
+    $laporans = $user->laporans()->orderBy('created_at', 'desc')->get();
     return view('riwayatwarga', compact('laporans'));
     })->name('warga.riwayat');
 

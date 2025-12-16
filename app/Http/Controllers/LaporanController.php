@@ -16,6 +16,7 @@ class LaporanController extends Controller
             'deskripsi' => 'required|string',
             'lokasi' => 'required|string|max:255',
             'jenis_sampah' => 'required|string|max:255',
+            'gram' => 'required|integer|min:1',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -24,17 +25,24 @@ class LaporanController extends Controller
             $fotoPath = $request->file('foto')->store('laporan-foto', 'public');
         }
 
+        $poin = floor($request->gram / 100) * 10;
+
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $user->increment('poin', $poin);
+
         Laporan::create([
             'user_id' => Auth::id(),
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
             'lokasi' => $request->lokasi,
             'jenis_sampah' => $request->jenis_sampah,
+            'gram' => $request->gram,
             'foto' => $fotoPath,
             'status' => 'pending',
         ]);
 
-        return redirect()->route('warga.laporan')->with('success', 'Laporan berhasil dikirim dan menunggu verifikasi.');
+        return redirect()->route('warga.riwayat')->with('success', 'Laporan berhasil terkirim, tunggu verifikasi petugas.');
     }
 
     public function index()
