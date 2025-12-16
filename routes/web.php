@@ -20,8 +20,8 @@ Route::get('/', function () {
 
 Route::view('/dashboardpetugas', 'dashboardpetugas')->name('petugas.dashboard');
 
-Route::view('/petugas/daftar-laporan', 'daftar-laporan')->name('petugas.daftar');
-Route::view('/petugas/jadwal-pengangkutan', 'jadwal-pengangkutan')->name('petugas.jadwal');
+Route::view('/petugas/daftar-laporan', 'laporanpetugas')->name('petugas.daftar');
+Route::view('/petugas/jadwal-pengangkutan', 'jadwalpetugas')->name('petugas.jadwal');
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
