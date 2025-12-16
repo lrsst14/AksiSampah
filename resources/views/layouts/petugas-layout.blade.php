@@ -179,7 +179,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center gap-2 justify-content-center {{ request()->routeIs('petugas.daftar') ? 'active' : '' }}" id="nav-daftar" href="{{ route('petugas.daftar') }}">
+                        <a class="nav-link d-flex align-items-center gap-2 justify-content-center {{ request()->routeIs('petugas.laporan') ? 'active' : '' }}" id="nav-daftar" href="{{ route('petugas.laporan') }}">
                             <i class="fa fa-list"></i>
                             <span class="d-none d-lg-inline">DAFTAR LAPORAN</span>
                         </a>
@@ -220,7 +220,7 @@
                             <a class="nav-link {{ request()->routeIs('petugas.dashboard') ? 'active' : '' }}" id="home-tab" href="{{ route('petugas.dashboard') }}" style="color: black; font-family:'poppins'; font-weight: bold;">HOME</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('petugas.daftar') ? 'active' : '' }}" id="daftar-tab" href="{{ route('petugas.daftar') }}" style="color: black; font-family:'poppins'; font-weight: bold;">DAFTAR LAPORAN MASUK</a>
+                            <a class="nav-link {{ request()->routeIs('petugas.laporan') ? 'active' : '' }}" id="daftar-tab" href="{{ route('petugas.laporan') }}" style="color: black; font-family:'poppins'; font-weight: bold;">DAFTAR LAPORAN MASUK</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('petugas.jadwal') ? 'active' : '' }}" id="jadwal-tab" href="{{ route('petugas.jadwal') }}" style="color: black;font-family:'poppins'; font-weight: bold;">PENGATURAN JADWAL PENGANGKUTAN</a>
@@ -239,7 +239,7 @@
             <a href="{{ route('petugas.dashboard') }}" class="py-3 text-white">
                 <i class="fa fa-house fs-5"></i>
             </a>
-            <a href="{{ route('petugas.daftar') }}" class="py-3 text-white">
+            <a href="{{ route('petugas.laporan') }}" class="py-3 text-white">
                 <i class="fa fa-list fs-5"></i>
             </a>
             <a href="{{ route('petugas.jadwal') }}" class="py-3 text-white">
@@ -266,7 +266,7 @@
                     <h6 class="fw-bold mb-3 text-black">Menu Cepat</h6>
                     <ul class="list-unstyled small">
                         <li><a href="{{ route('petugas.dashboard') }}" class="text-decoration-none text-black">Dashboard-Petugas</a></li>
-                        <li><a href="{{ route('petugas.daftar') }}" class="text-decoration-none text-black">Daftar Laporan Masuk</a></li>
+                        <li><a href="{{ route('petugas.laporan') }}" class="text-decoration-none text-black">Daftar Laporan Masuk</a></li>
                         <li><a href="{{ route('petugas.jadwal') }}" class="text-decoration-none text-black">Jadwal Pengangkutan</a></li>
                     </ul>
                 </div>
