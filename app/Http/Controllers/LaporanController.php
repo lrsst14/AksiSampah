@@ -38,14 +38,14 @@ class LaporanController extends Controller
     public function index()
     {
         $laporans = Laporan::with('user')->orderBy('created_at', 'desc')->get();
-        return view('laporanpetugas', compact('laporans'));
+        return view('petugas.laporan.index', compact('laporans'));
     }
 
-    public function verify($id)
+    public function verify(Request $request, $id)
     {
         $laporan = Laporan::findOrFail($id);
         $laporan->update(['status' => 'verified']);
 
-        return redirect()->route('petugas.daftar')->with('success', 'Laporan berhasil diverifikasi.');
+        return redirect()->back()->with('success', 'Laporan verified.');
     }
 }

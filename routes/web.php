@@ -4,10 +4,10 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Auth\LoginRegisterController;
+use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\LaporanController;
-use App\Models\User;
+use App\Http\Controllers\Auth\LoginRegisterController;
+use App\Http\Controllers\Auth\RegisterController;
 
 Route::get('/petugas/login', [LoginRegisterController::class, 'showPetugasForm'])->name('petugas.login');
 Route::post('/petugas/login', [LoginRegisterController::class, 'petugasLogin'])->name('petugas.login.store');
@@ -23,9 +23,12 @@ Route::get('/', function () {
 Route::view('/dashboardpetugas', 'dashboardpetugas')->name('petugas.dashboard');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/petugas/daftar-laporan', [LaporanController::class, 'index'])->name('petugas.daftar');
-    Route::post('/petugas/daftar-laporan/{id}/verify', [LaporanController::class, 'verify'])->name('petugas.daftar.verify');
-    Route::view('/petugas/jadwal-pengangkutan', 'jadwalpetugas')->name('petugas.jadwal');
+    Route::get('/petugas/laporan', [LaporanController::class, 'index'])->name('petugas.laporan');
+    Route::post('/petugas/laporan/{id}/verify', [LaporanController::class, 'verify'])->name('petugas.laporan.verify');
+    Route::get('/petugas/jadwal', [JadwalController::class, 'index'])->name('petugas.jadwal');
+    Route::post('/petugas/jadwal', [JadwalController::class, 'store'])->name('petugas.jadwal.store');
+    Route::put('/petugas/jadwal/{jadwal}', [JadwalController::class, 'update'])->name('petugas.jadwal.update');
+    Route::delete('/petugas/jadwal/{jadwal}', [JadwalController::class, 'destroy'])->name('petugas.jadwal.destroy');
 
     Route::get('/warga/laporan', function () {
         return view('laporanwarga');
