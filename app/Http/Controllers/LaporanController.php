@@ -44,7 +44,7 @@ class LaporanController extends Controller
             'status' => 'pending',
         ]);
 
-        return redirect()->route('warga.riwayat')->with('success', 'Laporan berhasil terkirim, tunggu verifikasi petugas.');
+        return redirect()->route('warga.laporan')->with('success', 'Laporan berhasil terkirim, tunggu verifikasi petugas.');
     }
 
     public function index()

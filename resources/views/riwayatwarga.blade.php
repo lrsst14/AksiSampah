@@ -26,7 +26,7 @@
                             
                             {{-- Badge Status --}}
                             @php
-                                $statusText = $laporan->status == 'pending' ? 'Diproses' : ($laporan->status == 'verified' ? 'Selesai' : ucfirst($laporan->status));
+                                $statusText = $laporan->status == 'pending' ? 'Menunggu Verifikasi' : ($laporan->status == 'verified' ? 'Terverifikasi' : ucfirst($laporan->status));
                                 $statusClass = $laporan->status == 'pending' ? 'bg-warning text-dark' : ($laporan->status == 'verified' ? 'bg-success' : 'bg-secondary');
                             @endphp
                             <span class="badge {{ $statusClass }} text-uppercase fw-bold p-2">

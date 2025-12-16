@@ -105,6 +105,27 @@
         </div>
     </div>
 
+    <!-- Success Modal -->
+    @if(session('success'))
+    <div class="modal fade show" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="false" style="display: block;">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Laporan Berhasil Dikirim</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>{{ session('success') }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <a href="{{ route('warga.riwayat') }}" class="btn btn-primary">Cek Status Laporan</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+    @endif
 
     @push('scripts')
     <script>
@@ -114,6 +135,14 @@
             img.src = URL.createObjectURL(event.target.files[0]);
             img.classList.remove('d-none');
         }
+
+        @if(session('success'))
+        // Show modal on page load if success session exists
+        document.addEventListener('DOMContentLoaded', function() {
+            var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+            successModal.show();
+        });
+        @endif
     </script>
     @endpush
 

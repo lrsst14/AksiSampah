@@ -21,13 +21,13 @@
 <div class="row text-center mb-4">
     <div class="col-md-6">
         <div class="card border-0 shadow-sm p-3 dashboard-card">
-            <span class="text-muted">Diproses</span>
+            <span class="text-muted">Menunggu Verifikasi</span>
             <h3 class="text-primary fw-bold">7</h3>
         </div>
     </div>
     <div class="col-md-6">
         <div class="card border-0 shadow-sm p-3 dashboard-card">
-            <span class="text-muted">Selesai</span>
+            <span class="text-muted">Terverifikasi</span>
             <h3 class="text-success fw-bold">10</h3>
         </div>
     </div>
