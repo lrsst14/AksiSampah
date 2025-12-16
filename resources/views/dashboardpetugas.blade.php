@@ -76,9 +76,17 @@
         /* Ringkasan: center badges and tighten spacing */
         #ringkasanBadges { justify-content: center; gap: .5rem; }
         .ringkasan-widget { margin-top: .5rem; }
-
-        /* Top action button full-width on mobile */
+/* Top action button full-width on mobile */
         .d-flex.gap-2 > a.btn { width: 100%; display:flex; align-items:center; justify-content:center; }
+    }
+
+    /* Jadwal compact styling to match sample */
+    .jadwal-card-compact .fw-bold.text-success { color: #2e8a50; font-size:1.05rem; }
+    .jadwal-card-compact .small.text-muted { margin-bottom:0.4rem; }
+    .jadwal-card-compact .btn-outline-success { border-color:#28a745; color:#28a745; }
+    @media (max-width:575.98px) {
+        .jadwal-card-compact { text-align:center; }
+        .jadwal-card-compact .d-flex { justify-content:center; flex-wrap:wrap; gap:.5rem; }
     }
 </style>
 
@@ -108,22 +116,16 @@
 
 {{-- STATISTIK STATUS --}}
 <div class="row text-center mb-4">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <div class="card border-0 shadow-sm p-3 dashboard-card">
             <span class="text-muted">Menunggu Verifikasi</span>
             <h3 class="text-warning fw-bold">10</h3>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
         <div class="card border-0 shadow-sm p-3 dashboard-card">
-            <span class="text-muted">Terjadwal</span>
-            <h3 class="text-primary fw-bold">7</h3>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card border-0 shadow-sm p-3 dashboard-card">
-            <span class="text-muted">Selesai</span>
-            <h3 class="text-success fw-bold">12</h3>
+            <span class="text-muted">Terverifikasi</span>
+            <h3 class="text-success fw-bold">7</h3>
         </div>
     </div>
 </div>
@@ -142,23 +144,20 @@
 <div class="row g-3">
 
     <div class="col-md-6">
-        <div class="card border-0 shadow-sm p-4 h-100" id="jadwalCard" data-date="2025-12-20" data-location="Area 12" data-time="09:00">
+        <div class="card border-0 shadow-sm p-4 h-100 jadwal-card-compact" id="jadwalCard" data-date="2025-12-20" data-location="Area 12" data-time="09:00">
             <h6 class="fw-semibold">Jadwal Pengangkutan Berikutnya</h6>
 
-            <div class="d-flex align-items-center gap-3 mb-2 jadwal-header">
-                <div class="small text-muted me-2">Tanggal:</div>
-                <div class="fw-semibold" id="jadwalDate">Rabu, 20 Desember 2025</div>
-                <div class="ms-auto d-flex gap-2 flex-column flex-sm-row">
-                    <button class="btn btn-sm btn-outline-secondary w-100 w-sm-auto" id="jadwalPrev">&larr; Sebelumnya</button>
-                    <button class="btn btn-sm btn-outline-secondary w-100 w-sm-auto" id="jadwalNext">Selanjutnya &rarr;</button>
-                </div>
+            <p class="small text-muted mb-1">Pengambilan selanjutnya di lokasi Anda:</p>
+
+            <div class="mb-3">
+                <div class="fw-bold text-success" id="jadwalDate">Rabu, 20 Desember 2025</div>
+                <div class="text-muted small" id="jadwalTime">Pukul 09:00</div>
             </div>
 
-            <p class="mb-1">📍 Lokasi: <span id="jadwalLocation">Area 12</span></p>
-            <p>⏰ <span id="jadwalTime">09.00 WIB</span></p>
-
             <div class="d-flex gap-2">
-                <a href="{{ route('petugas.jadwal') }}" class="btn btn-sm text-white d-inline-flex align-items-center gap-2" style="background:#598665; border-radius:6px">Lihat Jadwal</a>
+                <a href="{{ route('petugas.jadwal') }}" class="btn btn-sm text-white d-inline-flex align-items-center gap-2" style="background:#598665; border-radius:6px">
+                    <i class="fa-solid fa-list me-1"></i> Lihat Jadwal
+                </a>
                 <a href="{{ route('petugas.jadwal') }}" class="btn btn-outline-secondary btn-sm">Kelola Jadwal</a>
             </div>
         </div>
@@ -171,19 +170,16 @@
                 <div class="d-flex align-items-center gap-3 ringkasan-row">
                 <div class="flex-grow-1">
                     <small class="text-muted">Periode: Hari ini &middot; Terakhir diperbarui {{ now()->format('d M Y H:i') }}</small>
-
-                    <div class="d-flex gap-2 mt-3" id="ringkasanBadges">
+<div class="d-flex gap-2 mt-3" id="ringkasanBadges">
                         <span class="badge bg-warning text-dark" id="badge-menunggu">Menunggu: 10</span>
-                        <span class="badge bg-primary" id="badge-diproses">Diproses: 8</span>
-                        <span class="badge bg-success" id="badge-terverifikasi">Terverifikasi: 12</span>
-                        <span class="badge bg-danger" id="badge-ditolak">Ditolak/Invalid: 4</span>
-                    </div>
+                        <span class="badge bg-success" id="badge-terverifikasi">Terverifikasi: 7</span>
+                    </div>  
 
                     <div class="mt-3">
                         <div class="progress" style="height:10px; background:#e9f3ec; border-radius:6px; overflow:hidden;">
                             <div class="progress-bar" role="progressbar" id="ringkasanProgress" style="width:35%; background:#3f8a63;"></div>
                         </div>
-                        <small class="text-muted" id="ringkasanProgressText">35% laporan terverifikasi hari ini</small>
+                        <small class="text-muted" id="ringkasanProgressText">35% laporan selesai hari ini</small> 
                     </div>
                 </div>
 
@@ -201,203 +197,9 @@
 
 </div>
 
-<div class="mt-4">
 
-    <!-- Filters (Status / Lokasi / Jenis Sampah / Search) -->
-    <div class="d-flex gap-2 mb-3 filters-row">
-        <div class="dropdown">
-            <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">Status</button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Semua</a></li>
-                <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Menunggu Verifikasi</a></li>
-                <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Diproses</a></li>
-                <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Terverifikasi</a></li>
-                <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Ditolak/Invalid</a></li>
-            </ul>
-        </div>
-        <div class="dropdown">
-            <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" style="font-family:'poppins'; ">Lokasi</button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Semua</a></li>
-                <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Lokasi A</a></li>
-                <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Lokasi B</a></li>
-                <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Lokasi C</a></li>
-                <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Lokasi D</a></li>
-            </ul>
-        </div>
-        <div class="dropdown">
-            <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" style="font-family:'poppins';">Jenis Sampah</button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Semua</a></li>
-                <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Organik</a></li>
-                <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Anorganik</a></li>
-                <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Plastik</a></li>
-            </ul>
-        </div>
-        <div class="ms-auto">
-            <div class="input-group">
-                <input class="form-control" placeholder="Search" style="font-family:'poppins';">
-                <button class="btn" style="background-color: #d7e2de;font-family:'poppins';">Search</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Semua Laporan -->
-    <div class="card mb-5" style="border-radius:12px;background-color:#F4F7F2">
-        <div class="card-body">
-            <h6 class="mb-3" style="font-family:'poppins';">Semua Laporan</h6>
-            <div class="table-responsive">
-                <table class="table table-striped align-middle">
-                    <thead>
-                        <tr class="text-muted small" style="text-align: center;">
-                            <th style="font-family:'poppins'; font-weight: bold;">ID Laporan</th>
-                            <th style="font-family:'poppins'; font-weight: bold;">Tanggal Laporan</th>
-                            <th style="font-family:'poppins'; font-weight: bold;">Lokasi</th>
-                            <th style="font-family:'poppins'; font-weight: bold;">Jenis Sampah</th>
-                            <th style="text-align:center;font-family:'poppins'; font-weight: bold;">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @for($i=1;$i<=8;$i++)
-                        <tr>
-                            <td data-label="ID Laporan" style="text-align: center;font-family:'poppins'; ">#LP-2025-0{{ $i }}</td>
-                            <td data-label="Tanggal" style="text-align: center ;font-family:'poppins'; ">2025-12-0{{ $i }}</td>
-                            <td data-label="Lokasi" style="text-align: center;font-family:'poppins'; ">Jl. Contoh No. {{ $i }}</td>
-                            <td data-label="Jenis" style="text-align: center;font-family:'poppins';">{{ $i % 2 ? 'Plastik' : 'Organik' }}</td>
-                            <td data-label="Aksi" class="action-center" style="display:flex; justify-content:center; align-items:center;">
-                                <button class="detail-btn btn btn-sm" style="background-color: #d7e2de; font-family:'poppins'; color:#000; padding:6px 10px; border-radius:6px; border:none;" data-bs-toggle="modal" data-bs-target="#updateStatusModal" data-id="#LP-2025-0{{ $i }}" data-status="Menunggu Verifikasi">Lihat Detail</button>
-                            </td>
-                        </tr>
-                        @endfor
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-</div>
-
-<!-- Modal: Update Status -->
-
-<!-- Modal: Jadwal Detail -->
-<div class="modal fade" id="jadwalDetailModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header" style="background: #DDE6D1;">
-        <h5 class="modal-title" style="font-family:'poppins'; font-weight: bold;">Detail Jadwal Pengangkutan</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <form id="jadwalDetailForm">
-        <div class="modal-body">
-            <div class="mb-3">
-                <label class="form-label">Tanggal</label>
-                <input type="date" class="form-control" id="jadwalInputDate" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Waktu</label>
-                <input type="time" class="form-control" id="jadwalInputTime" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Lokasi</label>
-                <input type="text" class="form-control" id="jadwalInputLocation" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Catatan</label>
-                <textarea class="form-control" id="jadwalInputNotes" rows="3" placeholder="(Opsional)"></textarea>
-            </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary btn-sm">Simpan Perubahan</button>
-          <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Tutup</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id="updateStatusModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header" style="background: #DDE6D1;">
-        <h5 class="modal-title" style="font-family:'poppins'; font-weight: bold;">Update Status Laporan : <span id="modal-laporan-id">-</span></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <form id="updateStatusForm" method="POST" action="#">
-        @csrf
-        <div class="modal-body">
-            <p class="text-muted small" style="font-family:'poppins';">Status saat ini: <strong id="modal-current-status">-</strong></p>
-
-            <div class="mb-3">
-                <label class="form-label" style="font-family:'poppins';">Pilih Status Baru</label>
-                <select class="form-select" id="newStatus" name="status" required>
-                    <option value="">-- Pilih Status --</option>
-                    <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
-                    <option value="Diproses">Diproses</option>
-                    <option value="Terverifikasi">Terverifikasi</option>
-                    <option value="Ditolak">Tolak/Invalid</option>
-                </select>
-            </div>
-
-            <div class="mb-3 d-none" id="rejectionNoteWrap">
-                <label class="form-label text-danger" style="font-family:'poppins';">Alasan Penolakan (wajib jika tolak)</label>
-                <textarea class="form-control" id="rejectionNote" name="catatan" rows="3"></textarea>
-            </div>
-
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-light btn-sm me-2" style="font-family:'poppins';background :#d7e2de">Simpan</button>
-          <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal" style="font-family:'poppins';background:#d7e2de">Batal</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
 
 @push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function(){
-    var updateModal = document.getElementById('updateStatusModal');
-    if(updateModal){
-        updateModal.addEventListener('show.bs.modal', function (event) {
-            var button = event.relatedTarget;
-            var laporanId = button ? button.getAttribute('data-id') : '-';
-            var status = button ? button.getAttribute('data-status') : '-';
-
-            document.getElementById('modal-laporan-id').textContent = laporanId;
-            document.getElementById('modal-current-status').textContent = status;
-
-            // reset form
-            document.getElementById('newStatus').value = '';
-            document.getElementById('rejectionNoteWrap').classList.add('d-none');
-            document.getElementById('rejectionNote').value = '';
-        });
-
-        var newStatus = document.getElementById('newStatus');
-        newStatus.addEventListener('change', function(){
-            var wrap = document.getElementById('rejectionNoteWrap');
-            if(this.value === 'Ditolak'){
-                wrap.classList.remove('d-none');
-                document.getElementById('rejectionNote').setAttribute('required','required');
-            } else {
-                wrap.classList.add('d-none');
-                document.getElementById('rejectionNote').removeAttribute('required');
-            }
-        });
-
-        // demo submit prevention
-        document.getElementById('updateStatusForm').addEventListener('submit', function(e){
-            e.preventDefault();
-            var id = document.getElementById('modal-laporan-id').textContent;
-            var newStatusVal = document.getElementById('newStatus').value;
-            var note = document.getElementById('rejectionNote').value;
-            var modal = bootstrap.Modal.getInstance(updateModal);
-            modal.hide();
-            alert('Status untuk ' + id + ' diubah menjadi: ' + newStatusVal + (note ? '\nCatatan: ' + note : ''));
-        });
-    }
-});
-</script>
 
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -454,9 +256,7 @@ document.addEventListener('DOMContentLoaded', function(){
             const btnPrev = document.getElementById('jadwalPrev');
             const btnNext = document.getElementById('jadwalNext');
             const dateDisplay = document.getElementById('jadwalDate');
-            const locDisplay = document.getElementById('jadwalLocation');
             const timeDisplay = document.getElementById('jadwalTime');
-            const detailBtn = document.getElementById('jadwalDetailBtn');
 
             function toISO(d){ return d.toISOString().slice(0,10); }
             function formatDate(idate){
@@ -464,56 +264,18 @@ document.addEventListener('DOMContentLoaded', function(){
                     return new Date(idate).toLocaleDateString('id-ID',{ weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
                 }catch(e){ return idate; }
             }
-
-            function shiftDateBy(days){
+function shiftDateBy(days){
                 const current = new Date(jadwalCard.getAttribute('data-date'));
                 current.setDate(current.getDate() + days);
                 const iso = toISO(current);
                 jadwalCard.setAttribute('data-date', iso);
-                detailBtn.setAttribute('data-date', iso);
                 dateDisplay.textContent = formatDate(iso);
             }
 
-            btnPrev.addEventListener('click', function(){ shiftDateBy(-1); });
-            btnNext.addEventListener('click', function(){ shiftDateBy(1); });
+            if(btnPrev) btnPrev.addEventListener('click', function(){ shiftDateBy(-1); });
+            if(btnNext) btnNext.addEventListener('click', function(){ shiftDateBy(1); });
 
-            // Show modal with current data
-            const jadwalModal = document.getElementById('jadwalDetailModal');
-            if(jadwalModal){
-                jadwalModal.addEventListener('show.bs.modal', function(event){
-                    const button = event.relatedTarget || detailBtn;
-                    const id = button.getAttribute('data-id') || '1';
-                    const date = button.getAttribute('data-date') || jadwalCard.getAttribute('data-date');
-                    const time = button.getAttribute('data-time') || jadwalCard.getAttribute('data-time');
-                    const location = button.getAttribute('data-location') || jadwalCard.getAttribute('data-location');
 
-                    document.getElementById('jadwalInputDate').value = date;
-                    document.getElementById('jadwalInputTime').value = time;
-                    document.getElementById('jadwalInputLocation').value = location;
-                    document.getElementById('jadwalInputNotes').value = '';
-                });
-
-                // save changes (demo)
-                document.getElementById('jadwalDetailForm').addEventListener('submit', function(e){
-                    e.preventDefault();
-                    const newDate = document.getElementById('jadwalInputDate').value;
-                    const newTime = document.getElementById('jadwalInputTime').value;
-                    const newLocation = document.getElementById('jadwalInputLocation').value;
-
-                    jadwalCard.setAttribute('data-date', newDate);
-                    jadwalCard.setAttribute('data-time', newTime);
-                    jadwalCard.setAttribute('data-location', newLocation);
-
-                    // update displays
-                    document.getElementById('jadwalDate').textContent = formatDate(newDate);
-                    document.getElementById('jadwalTime').textContent = newTime.replace(':', '.') + ' WIB';
-                    document.getElementById('jadwalLocation').textContent = newLocation;
-
-                    var modal = bootstrap.Modal.getInstance(jadwalModal);
-                    modal.hide();
-                    alert('Jadwal disimpan.');
-                });
-            }
         }
     }
     // Ringkasan (doughnut)
@@ -536,8 +298,11 @@ document.addEventListener('DOMContentLoaded', function(){
                 }
             }
             setRingCanvasSize();
-        const ringData = [10, 8, 12, 4];
-        const ringLabels = ['Menunggu Verifikasi','Diproses','Terverifikasi','Ditolak/Invalid'];
+        const ringData = [10, 7];
+        const ringLabels = ['Menunggu Verifikasi','Terverifikasi'];
+        // expose to global so modal logic can update counts
+        window.ringData = ringData;
+        window.ringLabels = ringLabels; 
 
         // draw centered text inside doughnut using a Chart.js plugin for perfect centering
         const centerTextPlugin = {
@@ -555,11 +320,11 @@ document.addEventListener('DOMContentLoaded', function(){
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 const largeSize = cfg.fontSize || Math.round(Math.min(chart.width * 0.12, 28));
-                ctx.font = `bold ${largeSize}px Poppins, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial`;
+                ctx.font = 'bold ' + largeSize + 'px Poppins, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial';
                 ctx.fillText(cfg.line1 || '', centerX, centerY - (cfg.lineSpacing || 6));
                 // Line 2 (small label)
                 const smallSize = cfg.subFontSize || Math.round(Math.max(11, largeSize * 0.45));
-                ctx.font = `${smallSize}px Poppins, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial`;
+                ctx.font = smallSize + 'px Poppins, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial';
                 ctx.fillStyle = cfg.subColor || '#6c757d';
                 ctx.fillText(cfg.line2 || '', centerX, centerY + (cfg.lineSpacing || 12));
                 ctx.restore();
@@ -572,10 +337,10 @@ document.addEventListener('DOMContentLoaded', function(){
         const ringChart = new Chart(ringCtx, {
             type: 'doughnut',
             data: {
-                labels: ringLabels,
+labels: ringLabels,
                 datasets: [{
                     data: ringData,
-                    backgroundColor: ['#ffc107','#0d6efd','#28a745','#dc3545'],
+                    backgroundColor: ['#ffc107','#28a745'],
                     hoverOffset: 6
                 }]
             },
@@ -610,16 +375,14 @@ document.addEventListener('DOMContentLoaded', function(){
         }
 
         // update center total + badges + progress automatically
-        const total = ringData.reduce((a,b)=>a+b,0);
-        const verified = ringData[2]; // terverifikasi
-        const verifiedPct = Math.round((verified/total)*100);
+        const total = window.ringData.reduce((a,b)=>a+b,0);
+        const selesai = window.ringData[1] || 0;
+        const selesaiPct = total ? Math.round((selesai/total)*100) : 0;
         document.getElementById('ringkasanTotal').textContent = total;
-        document.getElementById('badge-menunggu').textContent = 'Menunggu: ' + ringData[0];
-        document.getElementById('badge-diproses').textContent = 'Diproses: ' + ringData[1];
-        document.getElementById('badge-terverifikasi').textContent = 'Terverifikasi: ' + ringData[2];
-        document.getElementById('badge-ditolak').textContent = 'Ditolak/Invalid: ' + ringData[3];
-        document.getElementById('ringkasanProgress').style.width = verifiedPct + '%';
-        document.getElementById('ringkasanProgressText').textContent = verifiedPct + '% laporan terverifikasi hari ini';
+        document.getElementById('badge-menunggu').textContent = 'Menunggu: ' + window.ringData[0];
+        document.getElementById('badge-terverifikasi').textContent = 'Terverifikasi: ' + window.ringData[1];
+        document.getElementById('ringkasanProgress').style.width = selesaiPct + '%';
+        document.getElementById('ringkasanProgressText').textContent = selesaiPct + '% laporan terverifikasi hari ini';
     }});
 </script>
 

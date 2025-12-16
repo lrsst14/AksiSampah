@@ -68,7 +68,7 @@
             <h6 class="mb-3" style="font-family:'poppins';">Laporan Terverifikasi</h6>
 
             <div class="table-responsive">
-                <table class="table table-borderless align-middle">
+<table class="table table-borderless align-middle">
                     <thead>
                         <tr class="text-muted small" style="text-align: center;font-family:'poppins';">
                             <th style="text-align: center;">ID Laporan</th>
@@ -101,9 +101,7 @@
                 <ul class="dropdown-menu">
                    <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Semua</a></li>
                    <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Menunggu Verifikasi</a></li>
-                   <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Diproses</a></li>
                    <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Terverifikasi</a></li>
-                   <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Ditolak/Invalid</a></li>
                 </ul>
             </div>
             <div class="dropdown">
@@ -125,7 +123,7 @@
                     <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Plastik</a></li>
                 </ul>
             </div>
-            <div class="ms-auto">
+<div class="ms-auto">
                 <div class="input-group">
                     <input class="form-control" placeholder="Search" style="font-family:'poppins';">
                     <button class="btn" style="background-color: #d7e2de;font-family:'poppins';">Search</button>
@@ -184,8 +182,7 @@
         @method('PUT')
         <div class="modal-body">
             <p class="text-muted small" style="font-family:'poppins';">Status saat ini: <strong id="modal-current-status">-</strong></p>
-
-            <div class="mb-3">
+<div class="mb-3">
                 <label class="form-label" style="font-family:'poppins';">Pilih Status Baru</label>
                 <select class="form-select" id="newStatus" name="status" required>
                     <option value="">-- Pilih Status --</option>
