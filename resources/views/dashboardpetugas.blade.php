@@ -150,15 +150,33 @@
             <p class="small text-muted mb-1">Pengambilan selanjutnya di lokasi Anda:</p>
 
             <div class="mb-3">
-                <div class="fw-bold text-success" id="jadwalDate">Rabu, 20 Desember 2025</div>
-                <div class="text-muted small" id="jadwalTime">Pukul 09:00</div>
+                @php
+                    $nextJadwal = \App\Models\Jadwal::where('tanggal', '>=', now()->toDateString())
+                        ->orderBy('tanggal')
+                        ->orderBy('waktu')
+                        ->first();
+                    if ($nextJadwal) {
+                        $hari = ['Sunday' => 'Minggu', 'Monday' => 'Senin', 'Tuesday' => 'Selasa', 'Wednesday' => 'Rabu', 'Thursday' => 'Kamis', 'Friday' => 'Jumat', 'Saturday' => 'Sabtu'];
+                        $bulan = ['January' => 'Januari', 'February' => 'Februari', 'March' => 'Maret', 'April' => 'April', 'May' => 'Mei', 'June' => 'Juni', 'July' => 'Juli', 'August' => 'Agustus', 'September' => 'September', 'October' => 'Oktober', 'November' => 'November', 'December' => 'Desember'];
+                        $tanggal = \Carbon\Carbon::parse($nextJadwal->tanggal);
+                        $hariNama = $hari[$tanggal->format('l')];
+                        $bulanNama = $bulan[$tanggal->format('F')];
+                        $tanggalFormat = $hariNama . ', ' . $tanggal->format('d') . ' ' . $bulanNama . ' ' . $tanggal->format('Y');
+                    }
+                @endphp
+                @if($nextJadwal)
+                    <div class="fw-bold text-success" id="jadwalDate">{{ $tanggalFormat }}</div>
+                    <div class="text-muted small" id="jadwalTime">Pukul {{ $nextJadwal->waktu }}</div>
+                @else
+                    <div class="fw-bold text-muted" id="jadwalDate">Tidak ada jadwal</div>
+                    <div class="text-muted small" id="jadwalTime">Belum ada jadwal pengangkutan</div>
+                @endif
             </div>
 
             <div class="d-flex gap-2">
                 <a href="{{ route('petugas.jadwal') }}" class="btn btn-sm text-white d-inline-flex align-items-center gap-2" style="background:#598665; border-radius:6px">
-                    <i class="fa-solid fa-list me-1"></i> Lihat Jadwal
+                    <i class="fa-solid fa-list me-1"></i> Kelola Jadwal
                 </a>
-                <a href="{{ route('petugas.jadwal') }}" class="btn btn-outline-secondary btn-sm">Kelola Jadwal</a>
             </div>
         </div>
     </div>

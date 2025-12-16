@@ -96,10 +96,31 @@
                         <p class="mb-1 fw-bold">
                             Pengambilan selanjutnya di lokasi Anda:
                         </p>
-                        <h4 class="fw-bold text-success mb-1">
-                            Senin, 18 Desember 2025
-                        </h4>
-                        <p class="text-muted">Pukul 07:00</p>
+                        @php
+                            $nextJadwal = \App\Models\Jadwal::where('tanggal', '>=', now()->toDateString())
+                                ->orderBy('tanggal')
+                                ->orderBy('waktu')
+                                ->first();
+                            if ($nextJadwal) {
+                                $hari = ['Sunday' => 'Minggu', 'Monday' => 'Senin', 'Tuesday' => 'Selasa', 'Wednesday' => 'Rabu', 'Thursday' => 'Kamis', 'Friday' => 'Jumat', 'Saturday' => 'Sabtu'];
+                                $bulan = ['January' => 'Januari', 'February' => 'Februari', 'March' => 'Maret', 'April' => 'April', 'May' => 'Mei', 'June' => 'Juni', 'July' => 'Juli', 'August' => 'Agustus', 'September' => 'September', 'October' => 'Oktober', 'November' => 'November', 'December' => 'Desember'];
+                                $tanggal = \Carbon\Carbon::parse($nextJadwal->tanggal);
+                                $hariNama = $hari[$tanggal->format('l')];
+                                $bulanNama = $bulan[$tanggal->format('F')];
+                                $tanggalFormat = $hariNama . ', ' . $tanggal->format('d') . ' ' . $bulanNama . ' ' . $tanggal->format('Y');
+                            }
+                        @endphp
+                        @if($nextJadwal)
+                            <h4 class="fw-bold text-success mb-1">
+                                {{ $tanggalFormat }}
+                            </h4>
+                            <p class="text-muted">Pukul {{ $nextJadwal->waktu }}</p>
+                        @else
+                            <h4 class="fw-bold text-muted mb-1">
+                                Tidak ada jadwal
+                            </h4>
+                            <p class="text-muted">Belum ada jadwal pengangkutan</p>
+                        @endif
                     </div>
 
                     <a href="{{ route('warga.jadwal') }}" class="btn btn-outline-success">
