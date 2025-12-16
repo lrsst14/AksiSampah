@@ -70,7 +70,13 @@
                             <td style="text-align: center;font-family:'poppins';">{{ $jadwal->waktu->format('H:i') }}</td>
                             <td style="text-align: center;font-family:'poppins';">{{ $jadwal->deskripsi ?? '-' }}</td>
                             <td style="text-align: center;">
-                                <button class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editModal" onclick="editJadwal({{ $jadwal->id }}, '{{ $jadwal->tanggal->format('Y-m-d') }}', '{{ $jadwal->waktu->format('H:i') }}', '{{ addslashes($jadwal->lokasi) }}', '{{ addslashes($jadwal->deskripsi ?? '') }}')">Edit</button>
+                                <button class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editModal"
+                                    data-id="{{ $jadwal->id }}"
+                                    data-tanggal="{{ $jadwal->tanggal->format('Y-m-d') }}"
+                                    data-waktu="{{ $jadwal->waktu->format('H:i') }}"
+                                    data-lokasi="{{ htmlentities($jadwal->lokasi) }}"
+                                    data-deskripsi="{{ htmlentities($jadwal->deskripsi ?? '') }}"
+                                    onclick="editJadwalFromBtn(this)">Edit</button>
                                 <form action="{{ route('petugas.jadwal.destroy', $jadwal) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
@@ -135,6 +141,15 @@ function editJadwal(id, tanggal, waktu, lokasi, deskripsi) {
     document.getElementById('editWaktu').value = waktu;
     document.getElementById('editLokasi').value = lokasi;
     document.getElementById('editDeskripsi').value = deskripsi;
+}
+
+function editJadwalFromBtn(btn) {
+    const id = btn.dataset.id;
+    const tanggal = btn.dataset.tanggal;
+    const waktu = btn.dataset.waktu;
+    const lokasi = btn.dataset.lokasi ? btn.dataset.lokasi : '';
+    const deskripsi = btn.dataset.deskripsi ? btn.dataset.deskripsi : '';
+    editJadwal(id, tanggal, waktu, lokasi, deskripsi);
 }
 </script>
 @endpush

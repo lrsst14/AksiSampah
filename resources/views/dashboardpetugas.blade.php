@@ -158,7 +158,7 @@
             <p>⏰ <span id="jadwalTime">09.00 WIB</span></p>
 
             <div class="d-flex gap-2">
-                <button class="btn btn-sm text-white" style="background:#598665" id="jadwalDetailBtn" data-bs-toggle="modal" data-bs-target="#jadwalDetailModal" data-id="1" data-date="2025-12-20" data-location="Area 12" data-time="09:00">Lihat Detail Jadwal</button>
+                <a href="{{ route('petugas.jadwal') }}" class="btn btn-sm text-white d-inline-flex align-items-center gap-2" style="background:#598665; border-radius:6px">Lihat Jadwal</a>
                 <a href="{{ route('petugas.jadwal') }}" class="btn btn-outline-secondary btn-sm">Kelola Jadwal</a>
             </div>
         </div>
