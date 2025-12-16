@@ -13,6 +13,17 @@
         <div class="card-body">
             <form method="POST" action="{{ route('warga.laporan.store') }}" enctype="multipart/form-data">
                 @csrf
+
+                @if($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+
                 <div class="mb-4">
                     <h5 class="mb-3"><i class="bi bi-journal-plus"></i> Form Pelaporan Sampah</h5>
 
@@ -107,7 +118,7 @@
 
     <!-- Success Modal -->
     @if(session('success'))
-    <div class="modal fade show" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="false" style="display: block;">
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -124,7 +135,6 @@
             </div>
         </div>
     </div>
-    <div class="modal-backdrop fade show"></div>
     @endif
 
     @push('scripts')
