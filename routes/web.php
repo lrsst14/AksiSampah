@@ -60,10 +60,6 @@ Route::middleware(['auth'])->group(function () {
         return view('edukasiwarga');
     })->name('warga.edukasi');
 
-    Route::get('dashboardwarga', function () {
-        return view('dashboardwarga');
-    })->name('warga.dashboard');
-
     // Settings routes
     Route::redirect('settings', 'settings/profile');
     Route::get('dashboard', function () {
