@@ -67,5 +67,17 @@ Route::post('/warga/laporan', function () {
         ->with('success', 'Laporan sampah berhasil dikirim dan akan diproses petugas.');
 })->name('warga.laporan.store');
 
+Route::get('/warga/riwayat', function () {
+    return view('riwayatwarga');
+})->name('warga.riwayat');
+
+Route::get('/warga/jadwal', function () {
+    return view('jadwalwarga');
+})->name('warga.jadwal');
+
+Route::get('/warga/edukasi', function () {
+    return view('edukasiwarga');
+})->name('warga.edukasi');
+
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.store');

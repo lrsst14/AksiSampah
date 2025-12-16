@@ -65,21 +65,21 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center gap-2 justify-content-center" href="#">
+                        <a class="nav-link d-flex align-items-center gap-2 justify-content-center" href="{{ route('warga.riwayat') }}">
                             <i class="fa fa-clock-rotate-left"></i>
                             <span class="d-none d-lg-inline">RIWAYAT</span>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center gap-2 justify-content-center" href="#">
+                        <a class="nav-link d-flex align-items-center gap-2 justify-content-center" href="{{ route('warga.jadwal') }}">
                             <i class="fa fa-calendar"></i>
                             <span class="d-none d-lg-inline">JADWAL</span>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link d-flex align-items-center gap-2 justify-content-center" href="#">
+                        <a class="nav-link d-flex align-items-center gap-2 justify-content-center" href="{{ route('warga.edukasi') }}">
                             <i class="fa fa-graduation-cap"></i>
                             <span class="d-none d-lg-inline">EDUKASI</span>
                         </a>
@@ -116,13 +116,13 @@
             <a href="{{ route('warga.laporan') }}" class="py-5 text-white">
                 <i class="fa fa-trash fs-5"></i>
             </a>
-            <a href="#" class="py-5 text-white">
+            <a href="{{ route('warga.riwayat') }}" class="py-5 text-white">
                 <i class="fa fa-clock-rotate-left fs-5"></i>
             </a>
-            <a href="#" class="py-5 text-white">
+            <a href="{{ route('warga.jadwal') }}" class="py-5 text-white">
                 <i class="fa fa-calendar fs-5"></i>
             </a>
-            <a href="#" class="py-5 text-white">
+            <a href="{{ route('warga.edukasi') }}" class="py-5 text-white">
                 <i class="fa fa-graduation-cap fs-5"></i>
             </a>
         </aside>
