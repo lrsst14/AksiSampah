@@ -12,6 +12,7 @@ class Laporan extends Model
         'judul',
         'deskripsi',
         'lokasi',
+        'jenis_sampah',
         'foto',
         'status',
     ];

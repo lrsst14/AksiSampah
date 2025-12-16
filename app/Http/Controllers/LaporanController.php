@@ -15,6 +15,7 @@ class LaporanController extends Controller
             'judul' => 'required|string|max:255',
             'deskripsi' => 'required|string',
             'lokasi' => 'required|string|max:255',
+            'jenis_sampah' => 'required|string|max:255',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -28,6 +29,7 @@ class LaporanController extends Controller
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
             'lokasi' => $request->lokasi,
+            'jenis_sampah' => $request->jenis_sampah,
             'foto' => $fotoPath,
             'status' => 'pending',
         ]);
@@ -48,5 +50,16 @@ class LaporanController extends Controller
         $laporan->update(['status' => 'verified']);
 
         return redirect()->back()->with('success', 'Laporan verified.');
+    }
+
+    public function updateStatus(Request $request, Laporan $laporan)
+    {
+        $request->validate([
+            'status' => 'required|in:pending,verified',
+        ]);
+
+        $laporan->update(['status' => $request->status]);
+
+        return redirect()->back()->with('success', 'Status laporan berhasil diperbarui.');
     }
 }

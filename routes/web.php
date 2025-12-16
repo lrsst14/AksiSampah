@@ -51,6 +51,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/petugas/laporan', [LaporanController::class, 'index'])->name('petugas.laporan');
     Route::post('/petugas/laporan/{id}/verify', [LaporanController::class, 'verify'])->name('petugas.laporan.verify');
+    Route::put('/petugas/laporan/{laporan}/status', [LaporanController::class, 'updateStatus'])->name('petugas.laporan.updateStatus');
     Route::get('/petugas/jadwal', [JadwalController::class, 'index'])->name('petugas.jadwal');
     Route::post('/petugas/jadwal', [JadwalController::class, 'store'])->name('petugas.jadwal.store');
     Route::put('/petugas/jadwal/{jadwal}', [JadwalController::class, 'update'])->name('petugas.jadwal.update');

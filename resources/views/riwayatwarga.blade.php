@@ -19,16 +19,30 @@
         </div>
         <div class="card-body p-4">
             @if($laporans->count() > 0)
-                @foreach($laporans as $laporan)
-                <div class="mb-3 p-3 border rounded">
-                    <h6>{{ $laporan->judul }}</h6>
-                    <p>{{ $laporan->deskripsi }}</p>
-                    <small class="text-muted">Lokasi: {{ $laporan->lokasi }} | Tanggal: {{ $laporan->created_at->format('d M Y') }}</small>
-                    @if($laporan->foto)
-                    <br><img src="{{ asset('storage/' . $laporan->foto) }}" alt="Foto" class="img-fluid mt-2" style="max-width:200px;">
-                    @endif
+                <div class="table-responsive">
+                    <table class="table table-borderless align-middle">
+                        <thead>
+                            <tr class="text-muted small" style="text-align: center;">
+                                <th style="text-align: center;">ID Laporan</th>
+                                <th style="text-align: center;">Tanggal Laporan</th>
+                                <th style="text-align: center;">Lokasi</th>
+                                <th style="text-align: center;">Judul</th>
+                                <th style="text-align: center;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($laporans as $laporan)
+                            <tr class="border-top">
+                                <td data-label="ID Laporan" style="text-align: center;">#{{ $laporan->id }}</td>
+                                <td data-label="Tanggal" style="text-align: center;">{{ $laporan->created_at->format('Y-m-d') }}</td>
+                                <td data-label="Lokasi" style="text-align: center;">{{ $laporan->lokasi }}</td>
+                                <td data-label="Judul" style="text-align: center;">{{ $laporan->judul }}</td>
+                                <td data-label="Status" style="text-align: center;">{{ ucfirst($laporan->status) }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
-                @endforeach
             @else
                 <p class="text-muted">Belum ada riwayat laporan.</p>
             @endif

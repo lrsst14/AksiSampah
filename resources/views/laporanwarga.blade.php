@@ -48,12 +48,12 @@
                         Jenis Sampah <span class="text-danger">*</span>
                     </label>
 
-                    <select class="form-select" name="jenis" required>
+                    <select class="form-select" name="jenis_sampah" required>
                         <option value="">-- Pilih Jenis Sampah --</option>
-                        <option>Organik</option>
-                        <option>Anorganik Plastik</option>
-                        <option>B3</option>
-                        <option>Koran</option>
+                        <option value="Organik">Organik</option>
+                        <option value="Plastik">Plastik</option>
+                        <option value="Anorganik">Anorganik</option>
+                        <option value="B3">B3</option>
                     </select>
                 </div>
 
