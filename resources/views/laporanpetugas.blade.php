@@ -25,38 +25,74 @@
 
     <h3 class="text-center mb-4" style="font-family:'poppins'; font-weight: bold;">Daftar Laporan Masuk</h3>
 
-        <div class="card mb-4" style="border-radius:12px;background-color:#F4F7F2;">
-            <div class="card-body">
-                <h6 class="mb-3" style="font-family:'poppins';">Prioritas : Menunggu Verifikasi</h6>
+    <!-- Pending Laporans -->
+    <div class="card mb-4" style="border-radius:12px;background-color:#F4F7F2;">
+        <div class="card-body">
+            <h6 class="mb-3" style="font-family:'poppins';">Menunggu Verifikasi</h6>
 
-                <div class="table-responsive">
-                    <table class="table table-borderless align-middle">
-                        <thead>
-                            <tr class="text-muted small" style="text-align: center;font-family:'poppins';">
-                                <th style="text-align: center;">ID Laporan</th>
-                                <th style="text-align: center;">Tanggal Laporan</th>
-                                <th style="text-align: center;">Lokasi</th>
-                                <th style="text-align: center;">Jenis Sampah</th>
-                                <th style="text-align: center;">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @for($i=1;$i<=4;$i++)
-                            <tr class="border-top">
-                                <td data-label="ID Laporan" style="text-align: center;font-family:'poppins';">#LP-2025-00{{ $i }}</td>
-                                <td data-label="Tanggal" style="text-align: center;font-family:'poppins';">2025-12-0{{ $i }}</td>
-                                <td data-label="Lokasi" style="text-align: center;font-family:'poppins';">Jl. Contoh No. {{ $i }}</td>
-                                <td data-label="Jenis" style="text-align: center;font-family:'poppins';">Organik</td>
-                                <td data-label="Aksi" class="action-center" style="display:flex; justify-content:center; align-items:center;">
-                                    <button class="detail-btn btn btn-sm" style="background:#d7e2de; color:#000; font-family:'poppins'; padding:6px 10px; border-radius:6px; border:none;" data-bs-toggle="modal" data-bs-target="#updateStatusModal" data-id="#LP-2025-00{{ $i }}" data-status="Menunggu Verifikasi">Lihat Detail</button>
-                                </td>
-                            </tr>
-                            @endfor
-                        </tbody>
-                    </table>
-                </div>
+            <div class="table-responsive">
+                <table class="table table-borderless align-middle">
+                    <thead>
+                        <tr class="text-muted small" style="text-align: center;font-family:'poppins';">
+                            <th style="text-align: center;">ID Laporan</th>
+                            <th style="text-align: center;">Tanggal Laporan</th>
+                            <th style="text-align: center;">Lokasi</th>
+                            <th style="text-align: center;">Judul</th>
+                            <th style="text-align: center;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($pendingLaporans as $laporan)
+                        <tr class="border-top">
+                            <td data-label="ID Laporan" style="text-align: center;font-family:'poppins';">#{{ $laporan->id }}</td>
+                            <td data-label="Tanggal" style="text-align: center;font-family:'poppins';">{{ $laporan->created_at->format('Y-m-d') }}</td>
+                            <td data-label="Lokasi" style="text-align: center;font-family:'poppins';">{{ $laporan->lokasi }}</td>
+                            <td data-label="Judul" style="text-align: center;font-family:'poppins';">{{ $laporan->judul }}</td>
+                            <td data-label="Aksi" class="action-center" style="display:flex; justify-content:center; align-items:center;">
+                                <form action="{{ route('petugas.laporan.verify', $laporan->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm" style="background:#598665; color:#fff; font-family:'poppins'; padding:6px 10px; border-radius:6px; border:none;">Verifikasi</button>
+                                </form>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
+    </div>
+
+    <!-- Verified Laporans -->
+    <div class="card mb-4" style="border-radius:12px;background-color:#F4F7F2;">
+        <div class="card-body">
+            <h6 class="mb-3" style="font-family:'poppins';">Laporan Terverifikasi</h6>
+
+            <div class="table-responsive">
+                <table class="table table-borderless align-middle">
+                    <thead>
+                        <tr class="text-muted small" style="text-align: center;font-family:'poppins';">
+                            <th style="text-align: center;">ID Laporan</th>
+                            <th style="text-align: center;">Tanggal Laporan</th>
+                            <th style="text-align: center;">Lokasi</th>
+                            <th style="text-align: center;">Judul</th>
+                            <th style="text-align: center;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($verifiedLaporans as $laporan)
+                        <tr class="border-top">
+                            <td data-label="ID Laporan" style="text-align: center;font-family:'poppins';">#{{ $laporan->id }}</td>
+                            <td data-label="Tanggal" style="text-align: center;font-family:'poppins';">{{ $laporan->created_at->format('Y-m-d') }}</td>
+                            <td data-label="Lokasi" style="text-align: center;font-family:'poppins';">{{ $laporan->lokasi }}</td>
+                            <td data-label="Judul" style="text-align: center;font-family:'poppins';">{{ $laporan->judul }}</td>
+                            <td data-label="Status" style="text-align: center;font-family:'poppins';">{{ ucfirst($laporan->status) }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
         <!-- Filters (Status / Lokasi / Jenis Sampah / Search) -->
         <div class="d-flex gap-2 mb-3 filters-row">
@@ -113,17 +149,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @for($i=1;$i<=8;$i++)
+                            @php
+                                $allLaporans = \App\Models\Laporan::with('user')->orderBy('created_at', 'desc')->get();
+                            @endphp
+                            @foreach($allLaporans as $laporan)
                             <tr>
-                                <td data-label="ID Laporan" style="text-align: center;font-family:'poppins'; ">#LP-2025-0{{ $i }}</td>
-                                <td data-label="Tanggal" style="text-align: center ;font-family:'poppins'; ">2025-12-0{{ $i }}</td>
-                                <td data-label="Lokasi" style="text-align: center;font-family:'poppins'; ">Jl. Contoh No. {{ $i }}</td>
-                                <td data-label="Jenis" style="text-align: center;font-family:'poppins';">{{ $i % 2 ? 'Plastik' : 'Organik' }}</td>
+                                <td data-label="ID Laporan" style="text-align: center;font-family:'poppins'; ">#{{ $laporan->id }}</td>
+                                <td data-label="Tanggal" style="text-align: center ;font-family:'poppins'; ">{{ $laporan->created_at->format('Y-m-d') }}</td>
+                                <td data-label="Lokasi" style="text-align: center;font-family:'poppins'; ">{{ $laporan->lokasi }}</td>
+                                <td data-label="Jenis" style="text-align: center;font-family:'poppins';">{{ $laporan->jenis_sampah ?? 'N/A' }}</td>
                                 <td data-label="Aksi" class="action-center" style="display:flex; justify-content:center; align-items:center;">
-                                    <button class="detail-btn btn btn-sm" style="background-color: #d7e2de; font-family:'poppins'; color:#000; padding:6px 10px; border-radius:6px; border:none;" data-bs-toggle="modal" data-bs-target="#updateStatusModal" data-id="#LP-2025-0{{ $i }}" data-status="Menunggu Verifikasi">Lihat Detail</button>
+                                    <button class="detail-btn btn btn-sm" style="background-color: #d7e2de; font-family:'poppins'; color:#000; padding:6px 10px; border-radius:6px; border:none;" data-bs-toggle="modal" data-bs-target="#updateStatusModal" data-id="#{{ $laporan->id }}" data-status="{{ ucfirst($laporan->status) }}">Lihat Detail</button>
                                 </td>
                             </tr>
-                            @endfor
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -142,6 +181,7 @@
       </div>
       <form id="updateStatusForm" method="POST" action="#">
         @csrf
+        @method('PUT')
         <div class="modal-body">
             <p class="text-muted small" style="font-family:'poppins';">Status saat ini: <strong id="modal-current-status">-</strong></p>
 
@@ -149,16 +189,9 @@
                 <label class="form-label" style="font-family:'poppins';">Pilih Status Baru</label>
                 <select class="form-select" id="newStatus" name="status" required>
                     <option value="">-- Pilih Status --</option>
-                    <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
-                    <option value="Diproses">Diproses</option>
-                    <option value="Terverifikasi">Terverifikasi</option>
-                    <option value="Ditolak">Tolak/Invalid</option>
+                    <option value="pending">Menunggu Verifikasi</option>
+                    <option value="verified">Terverifikasi</option>
                 </select>
-            </div>
-
-            <div class="mb-3 d-none" id="rejectionNoteWrap">
-                <label class="form-label text-danger" style="font-family:'poppins';">Alasan Penolakan (wajib jika tolak)</label>
-                <textarea class="form-control" id="rejectionNote" name="catatan" rows="3"></textarea>
             </div>
 
         </div>
@@ -177,40 +210,20 @@ document.addEventListener('DOMContentLoaded', function(){
     var updateModal = document.getElementById('updateStatusModal');
     updateModal.addEventListener('show.bs.modal', function (event) {
         var button = event.relatedTarget;
-        var laporanId = button.getAttribute('data-id');
+        var laporanId = button.getAttribute('data-id').replace('#', '');
         var status = button.getAttribute('data-status');
 
-        document.getElementById('modal-laporan-id').textContent = laporanId;
+        document.getElementById('modal-laporan-id').textContent = '#' + laporanId;
         document.getElementById('modal-current-status').textContent = status;
+
+        // set action
+        document.getElementById('updateStatusForm').action = '{{ url("petugas/laporan") }}/' + laporanId + '/status';
 
         // reset form
         document.getElementById('newStatus').value = '';
-        document.getElementById('rejectionNoteWrap').classList.add('d-none');
-        document.getElementById('rejectionNote').value = '';
     });
 
-    var newStatus = document.getElementById('newStatus');
-    newStatus.addEventListener('change', function(){
-        var wrap = document.getElementById('rejectionNoteWrap');
-        if(this.value === 'Ditolak'){
-            wrap.classList.remove('d-none');
-            document.getElementById('rejectionNote').setAttribute('required','required');
-        } else {
-            wrap.classList.add('d-none');
-            document.getElementById('rejectionNote').removeAttribute('required');
-        }
-    });
-
-    // demo submit prevention
-    document.getElementById('updateStatusForm').addEventListener('submit', function(e){
-        e.preventDefault();
-        var id = document.getElementById('modal-laporan-id').textContent;
-        var newStatusVal = document.getElementById('newStatus').value;
-        var note = document.getElementById('rejectionNote').value;
-        var modal = bootstrap.Modal.getInstance(updateModal);
-        modal.hide();
-        alert('Status untuk ' + id + ' diubah menjadi: ' + newStatusVal + (note ? '\nCatatan: ' + note : ''));
-    });
+    // remove rejection logic
 });
 </script>
 @endsection

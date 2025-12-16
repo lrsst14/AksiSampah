@@ -18,7 +18,32 @@
             </h6>
         </div>
         <div class="card-body p-4">
-            <p class="text-muted">Jadwal pengangkutan akan ditampilkan di sini.</p>
+            @if($jadwals->count() > 0)
+                <div class="table-responsive">
+                    <table class="table table-borderless align-middle">
+                        <thead>
+                            <tr class="text-muted small" style="text-align: center;font-family:'poppins';">
+                                <th style="text-align: left;">Lokasi</th>
+                                <th style="text-align: center;">Tanggal</th>
+                                <th style="text-align: center;">Waktu</th>
+                                <th style="text-align: center;">Deskripsi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($jadwals as $jadwal)
+                            <tr class="border-top">
+                                <td style="text-align: left;font-family:'poppins';">{{ $jadwal->lokasi }}</td>
+                                <td style="text-align: center;font-family:'poppins';">{{ $jadwal->tanggal->format('d/m/Y') }}</td>
+                                <td style="text-align: center;font-family:'poppins';">{{ $jadwal->waktu->format('H:i') }}</td>
+                                <td style="text-align: center;font-family:'poppins';">{{ $jadwal->deskripsi ?? '-' }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <p class="text-muted">Belum ada jadwal pengangkutan.</p>
+            @endif
         </div>
     </div>
 
