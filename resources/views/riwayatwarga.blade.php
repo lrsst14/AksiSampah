@@ -38,6 +38,9 @@
                         <div class="small text-muted mb-3">
                             <p class="mb-1"><i class="fa-solid fa-location-dot me-2"></i> {{ $laporan->lokasi ?? 'Alamat tidak tersedia' }}</p>
                             <p class="mb-1"><i class="fa-solid fa-weight-hanging me-2"></i> {{ $laporan->gram ?? 0 }} gram</p>
+                            @if($laporan->jadwal)
+                            <p class="mb-1"><i class="fa-solid fa-calendar-check me-2"></i> Jadwal: {{ \Carbon\Carbon::parse($laporan->jadwal->tanggal)->format('d/m/Y') }} — {{ $laporan->jadwal->waktu }}</p>
+                            @endif
                             <p class="mb-2">{{ $laporan->deskripsi ?? 'Tidak ada deskripsi.' }}</p>
                         </div>
 

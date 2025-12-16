@@ -14,6 +14,7 @@ class Laporan extends Model
         'lokasi',
         'jenis_sampah',
         'gram',
+        'jadwal_id',
         'foto',
         'status',
     ];
@@ -21,5 +22,10 @@ class Laporan extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function jadwal()
+    {
+        return $this->belongsTo(\App\Models\Jadwal::class);
     }
 }

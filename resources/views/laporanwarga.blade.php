@@ -50,14 +50,16 @@
 
                         <div class="col-md-3 mb-3">
                             <label class="form-label">Pilih Jadwal <span class="text-danger">*</span></label>
+                            @php
+                                $jadwals = \App\Models\Jadwal::where('tanggal', '>=', now()->toDateString())->orderBy('tanggal')->orderBy('waktu')->get();
+                            @endphp
                             <select name="jadwal_id" class="form-select" required>
                                 <option value="">-- Pilih Jadwal --</option>
-                                @if(isset($jadwals) && count($jadwals))
                                 @foreach($jadwals as $jadwal)
-                                <option value="{{ $jadwal->id }}">{{ $jadwal->hari }} — {{ $jadwal->waktu }}</option>
+                                <option value="{{ $jadwal->id }}">{{ \Carbon\Carbon::parse($jadwal->tanggal)->format('d/m/Y') }} — {{ $jadwal->waktu }}</option>
                                 @endforeach
-                                @else
-                                <option value="">(Belum ada jadwal tersedia)</option>
+                                @if($jadwals->isEmpty())
+                                <option value="" disabled>(Belum ada jadwal tersedia)</option>
                                 @endif
                             </select>
                             <small class="text-muted">Pilih jadwal yang sudah ditentukan petugas.</small>

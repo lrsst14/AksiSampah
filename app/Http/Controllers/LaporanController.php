@@ -17,6 +17,7 @@ class LaporanController extends Controller
             'lokasi' => 'required|string|max:255',
             'jenis_sampah' => 'required|string|max:255',
             'gram' => 'required|integer|min:1',
+            'jadwal_id' => 'required|exists:jadwals,id',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -38,6 +39,7 @@ class LaporanController extends Controller
             'lokasi' => $request->lokasi,
             'jenis_sampah' => $request->jenis_sampah,
             'gram' => $request->gram,
+            'jadwal_id' => $request->jadwal_id,
             'foto' => $fotoPath,
             'status' => 'pending',
         ]);
@@ -47,8 +49,8 @@ class LaporanController extends Controller
 
     public function index()
     {
-        $pendingLaporans = Laporan::with('user')->where('status', 'pending')->orderBy('created_at', 'desc')->get();
-        $verifiedLaporans = Laporan::with('user')->where('status', 'verified')->orderBy('created_at', 'desc')->get();
+        $pendingLaporans = Laporan::with('user', 'jadwal')->where('status', 'pending')->orderBy('created_at', 'desc')->get();
+        $verifiedLaporans = Laporan::with('user', 'jadwal')->where('status', 'verified')->orderBy('created_at', 'desc')->get();
         return view('laporanpetugas', compact('pendingLaporans', 'verifiedLaporans'));
     }
 
