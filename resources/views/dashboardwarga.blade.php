@@ -79,7 +79,7 @@
 </div>
 
 
-    {{-- BARIS 3: JADWAL & POIN (DUAL COLUMN) --}}
+    {{-- BARIS 3: JADWAL & POIN --}}
     <div class="row g-4 mb-4">
 
         {{-- Jadwal Berikutnya (Kiri) --}}

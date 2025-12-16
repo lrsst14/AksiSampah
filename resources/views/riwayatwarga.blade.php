@@ -1,53 +1,70 @@
 @extends('layouts.warga-layout')
 
 @section('content')
-<div class="container-lg px-3 pt-4">
-
-    <!-- Judul -->
-    <div class="text-center mb-4">
-        <h4 class="fw-bold" style="color:#598665;">
-            <i class="fa-solid fa-clock-rotate-left me-2"></i>Riwayat Laporan
-        </h4>
+<div>
+    
+    <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between mb-4 gap-3">
+        <div>
+            <h3 class="mb-0 fw-bold">Riwayat Laporan</h3>
+            <small class="text-muted">Daftar lengkap laporan yang Anda buat</small>
+        </div>
     </div>
 
-    <!-- Card Riwayat -->
-    <div class="card border-0 shadow-sm">
-        <div class="card-header bg-white border-bottom" style="border-color:#e0e0e0 !important;">
-            <h6 class="card-title fw-bold mb-0" style="color:#598665;">
-                <i class="fa-solid fa-history me-2"></i>Riwayat Laporan Sampah
-            </h6>
-        </div>
-        <div class="card-body p-4">
-            @if($laporans->count() > 0)
-                <div class="table-responsive">
-                    <table class="table table-borderless align-middle">
-                        <thead>
-                            <tr class="text-muted small" style="text-align: center;">
-                                <th style="text-align: center;">ID Laporan</th>
-                                <th style="text-align: center;">Tanggal Laporan</th>
-                                <th style="text-align: center;">Lokasi</th>
-                                <th style="text-align: center;">Judul</th>
-                                <th style="text-align: center;">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($laporans as $laporan)
-                            <tr class="border-top">
-                                <td data-label="ID Laporan" style="text-align: center;">#{{ $laporan->id }}</td>
-                                <td data-label="Tanggal" style="text-align: center;">{{ $laporan->created_at->format('Y-m-d') }}</td>
-                                <td data-label="Lokasi" style="text-align: center;">{{ $laporan->lokasi }}</td>
-                                <td data-label="Judul" style="text-align: center;">{{ $laporan->judul }}</td>
-                                <td data-label="Status" style="text-align: center;">{{ ucfirst($laporan->status) }}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+    @if($laporans->count() > 0)
+        <div class="row g-4">
+            @foreach($laporans as $laporan)
+            <div class="col-12">
+                <div class="card shadow-sm border-0 p-3">
+                    <div class="card-body">
+                        
+                        {{-- Header Laporan (Nama/Judul & Status) --}}
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <h5 class="fw-bold mb-1 text-dark">{{ $laporan->judul ?? 'Laporan Sampah' }}</h5>
+                                <span class="badge bg-secondary">{{ $laporan->jenis_sampah ?? 'Sampah Rumah Tangga' }}</span>
+                            </div>
+                            
+                            {{-- Badge Status --}}
+                            @php
+                                $statusClass = [
+                                    'menunggu' => 'bg-warning text-dark',
+                                    'diproses' => 'bg-info',
+                                    'selesai' => 'bg-success',
+                                    'ditolak' => 'bg-danger',
+                                ][strtolower($laporan->status)] ?? 'bg-secondary';
+                            @endphp
+                            <span class="badge {{ $statusClass }} text-uppercase fw-bold p-2">
+                                {{ ucfirst($laporan->status) }}
+                            </span>
+                        </div>
+
+                        {{-- Detail Laporan --}}
+                        <div class="small text-muted mb-3">
+                            <p class="mb-1"><i class="fa-solid fa-location-dot me-2"></i> {{ $laporan->lokasi ?? 'Alamat tidak tersedia' }}</p>
+                            <p class="mb-1"><i class="fa-solid fa-phone me-2"></i> {{ $laporan->kontak ?? 'Kontak tidak tersedia' }}</p>
+                            <p class="mb-2">{{ $laporan->deskripsi ?? 'Tidak ada deskripsi.' }}</p>
+                        </div>
+
+                        {{-- Footer Laporan (Tanggal) --}}
+                        <div class="d-flex gap-4 small text-dark border-top pt-2">
+                            <p class="mb-0"><i class="fa-solid fa-calendar-day me-1"></i> Dilaporkan: **{{ $laporan->created_at->format('d/m/Y') }}**</p>
+                            
+                            @if($laporan->tanggal_ambil)
+                            <p class="mb-0"><i class="fa-solid fa-calendar-check me-1"></i> Dijadwalkan: **{{ \Carbon\Carbon::parse($laporan->tanggal_ambil)->format('d/m/Y') }}**</p>
+                            @endif
+                        </div>
+                    </div>
                 </div>
-            @else
-                <p class="text-muted">Belum ada riwayat laporan.</p>
-            @endif
+            </div>
+            @endforeach
         </div>
-    </div>
+        
+    {{-- Jika Laporan Kosong --}}
+    @else
+        <div class="card shadow-sm border-0 p-4 text-center">
+            <p class="text-muted mb-0">Belum ada riwayat laporan yang dibuat oleh Anda.</p>
+        </div>
+    @endif
 
 </div>
 @endsection
