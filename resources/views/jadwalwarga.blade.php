@@ -44,26 +44,31 @@
             <!-- Jadwal Items -->
             <div class="mb-4 p-3 border rounded" style="background-color: #fafafa; border-color:#e0e0e0 !important;">
                 @foreach($jadwalGroup as $jadwal)
-                <div class="mb-3 pb-3" @if(!$loop->last) style="border-bottom: 1px solid #e0e0e0;" @endif>
-                    <!-- Lokasi -->
-                    <div class="d-flex align-items-start mb-2">
-                        <i class="fa-solid fa-location-dot me-2" style="color:#598665; margin-top: 2px;"></i>
-                        <span style="font-family:'poppins'; color:#333;">{{ $jadwal->lokasi }}</span>
+                <div class="mb-3 pb-3 d-flex justify-content-between align-items-start" @if(!$loop->last) style="border-bottom: 1px solid #e0e0e0;" @endif>
+                    <div style="flex-grow: 1;">
+                        <!-- Lokasi -->
+                        <div class="d-flex align-items-start mb-2">
+                            <i class="fa-solid fa-location-dot me-2" style="color:#598665; margin-top: 2px;"></i>
+                            <span style="font-family:'poppins'; color:#333;">{{ $jadwal->lokasi }}</span>
+                        </div>
+
+                        <!-- Waktu -->
+                        <div class="d-flex align-items-center mb-2 ms-1">
+                            <i class="fa-solid fa-clock me-2" style="color:#598665;"></i>
+                            <span style="font-family:'poppins'; color:#666;">{{ $jadwal->waktu->format('H:i') }}</span>
+                        </div>
+
+                        <!-- Deskripsi -->
+                        <div class="d-flex align-items-center ms-1">
+                            <i class="fa-solid fa-file-alt me-2" style="color:#598665;"></i>
+                            <span style="font-family:'poppins'; color:#888;">{{ $jadwal->deskripsi ?? '-' }}</span>
+                        </div>
                     </div>
 
-                    <!-- Waktu & Deskripsi -->
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div class="d-flex align-items-center flex-grow-1">
-                            <i class="fa-solid fa-clock me-2" style="color:#598665;"></i>
-                            <span style="font-family:'poppins'; color:#666;">
-                                {{ $jadwal->waktu->format('H:i') }} —
-                                <span style="color:#888;">{{ $jadwal->deskripsi ?? '-' }}</span>
-                            </span>
-                        </div>
-                        <button type="button" class="btn btn-sm" style="background-color: transparent; border: 2px solid #598665; color: #598665; border-radius: 20px; font-weight: 600; font-size: 0.85rem; padding: 5px 16px; font-family:'poppins';">
-                            Terjadwal
-                        </button>
-                    </div>
+                    <!-- Terjadwal Badge -->
+                    <span style="background-color: transparent; border: 2px solid #598665; color: #598665; border-radius: 20px; font-weight: 600; font-size: 0.75rem; padding: 6px 14px; font-family:'poppins'; white-space: nowrap; margin-left: 10px;">
+                        Terjadwal
+                    </span>
                 </div>
                 @endforeach
             </div>
