@@ -4,10 +4,9 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginRegisterController;
 
-Route::get('/login', [LoginRegisterController::class, 'showWargaForm'])->name('login');
-Route::post('/login', [LoginRegisterController::class, 'wargaLogin'])->name('login.store');
 Route::get('/petugas/login', [LoginRegisterController::class, 'showPetugasForm'])->name('petugas.login');
 Route::post('/petugas/login', [LoginRegisterController::class, 'petugasLogin'])->name('petugas.login.store');
 Route::get('/petugas/register', [LoginRegisterController::class, 'showPetugasRegisterForm'])->name('petugas.register');
@@ -16,7 +15,7 @@ Route::get('/petugas/forgot-password', [LoginRegisterController::class, 'showPet
 Route::post('/petugas/forgot-password', [LoginRegisterController::class, 'petugasForgotPassword'])->name('petugas.password.email');
 
 Route::get('/', function () {
-    return redirect()->route('register');
+    return redirect()->route('login');
 })->name('home');
 
 Route::view('/dashboardpetugas', 'dashboardpetugas')->name('petugas.dashboard');
@@ -68,5 +67,5 @@ Route::post('/warga/laporan', function () {
         ->with('success', 'Laporan sampah berhasil dikirim dan akan diproses petugas.');
 })->name('warga.laporan.store');
 
-Volt::route('/login', 'auth.login')->name('login');
-Volt::route('/register', 'auth.register')->name('register');
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register'])->name('register.store');

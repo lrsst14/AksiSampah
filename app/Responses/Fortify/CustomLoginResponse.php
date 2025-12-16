@@ -20,10 +20,6 @@ class CustomLoginResponse implements LoginResponse
 
         $role = $user->role ?? 'warga'; // Default to 'warga' if role not set
 
-        if ($role === 'petugas') {
-            return redirect()->route('petugas.dashboard');
-        } else {
-            return redirect()->route('warga.dashboard');
-        }
+        return redirect()->route('dashboard');
     }
 }

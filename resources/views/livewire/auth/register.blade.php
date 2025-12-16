@@ -20,7 +20,7 @@
             <h3 class="mt-1 fw-bold" style="color: #598665;">DAFTAR</h3>
         </div>
         <!-- Form Register -->
-        <form method="POST" action="{{ route('register.store') }}">
+        <form method="POST" action="{{ route('register') }}">
             @csrf
 
             @if($errors->any())
