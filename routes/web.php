@@ -6,6 +6,8 @@ use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginRegisterController;
+use App\Http\Controllers\LaporanController;
+use App\Models\User;
 
 Route::get('/petugas/login', [LoginRegisterController::class, 'showPetugasForm'])->name('petugas.login');
 Route::post('/petugas/login', [LoginRegisterController::class, 'petugasLogin'])->name('petugas.login.store');
@@ -20,21 +22,48 @@ Route::get('/', function () {
 
 Route::view('/dashboardpetugas', 'dashboardpetugas')->name('petugas.dashboard');
 
-Route::view('/petugas/daftar-laporan', 'laporanpetugas')->name('petugas.daftar');
-Route::view('/petugas/jadwal-pengangkutan', 'jadwalpetugas')->name('petugas.jadwal');
-
 Route::middleware(['auth'])->group(function () {
-    Route::redirect('settings', 'settings/profile');
+    Route::get('/petugas/daftar-laporan', [LaporanController::class, 'index'])->name('petugas.daftar');
+    Route::post('/petugas/daftar-laporan/{id}/verify', [LaporanController::class, 'verify'])->name('petugas.daftar.verify');
+    Route::view('/petugas/jadwal-pengangkutan', 'jadwalpetugas')->name('petugas.jadwal');
 
+    Route::get('/warga/laporan', function () {
+        return view('laporanwarga');
+    })->name('warga.laporan');
+
+    Route::post('/warga/laporan', [LaporanController::class, 'store'])->name('warga.laporan.store');
+
+    Route::get('/warga/riwayat', function () {
+    /** @var \App\Models\User $user */
+    $user = Auth::user();
+    $laporans = $user->laporans()->where('status', 'verified')->orderBy('created_at', 'desc')->get();
+    return view('riwayatwarga', compact('laporans'));
+    })->name('warga.riwayat');
+
+    Route::get('/warga/jadwal', function () {
+        return view('jadwalwarga');
+    })->name('warga.jadwal');
+
+    Route::get('/warga/edukasi', function () {
+        return view('edukasiwarga');
+    })->name('warga.edukasi');
+
+    Route::get('dashboardwarga', function () {
+        return view('dashboardwarga');
+    })->name('warga.dashboard');
+
+    // Settings routes
+    Route::redirect('settings', 'settings/profile');
     Route::get('dashboard', function () {
         $user = Auth::user();
         if ($user->role === 'warga') {
-            return view('dashboardwarga');
+            return redirect()->route('warga.dashboard');
         } elseif ($user->role === 'petugas') {
-            return view('dashboardpetugas');
+            return redirect()->route('petugas.dashboard');
         }
         return redirect('/');
     })->name('dashboard');
+
     Volt::route('settings/profile', 'settings.profile')->name('profile.edit');
     Volt::route('settings/password', 'settings.password')->name('user-password.edit');
     Volt::route('settings/appearance', 'settings.appearance')->name('appearance.edit');
@@ -50,34 +79,6 @@ Route::middleware(['auth'])->group(function () {
         )
         ->name('two-factor.show');
 });
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('dashboardwarga', function () {
-        return view('dashboardwarga');
-    })->name('warga.dashboard');
-});
-
-Route::get('/warga/laporan', function () {
-    return view('laporanwarga');
-})->name('warga.laporan');
-
-Route::post('/warga/laporan', function () {
-    return redirect()
-        ->route('warga.dashboard')
-        ->with('success', 'Laporan sampah berhasil dikirim dan akan diproses petugas.');
-})->name('warga.laporan.store');
-
-Route::get('/warga/riwayat', function () {
-    return view('riwayatwarga');
-})->name('warga.riwayat');
-
-Route::get('/warga/jadwal', function () {
-    return view('jadwalwarga');
-})->name('warga.jadwal');
-
-Route::get('/warga/edukasi', function () {
-    return view('edukasiwarga');
-})->name('warga.edukasi');
 
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.store');

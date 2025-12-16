@@ -36,22 +36,31 @@
                                 <th style="text-align: center;">ID Laporan</th>
                                 <th style="text-align: center;">Tanggal Laporan</th>
                                 <th style="text-align: center;">Lokasi</th>
-                                <th style="text-align: center;">Jenis Sampah</th>
+                                <th style="text-align: center;">Judul</th>
+                                <th style="text-align: center;">Status</th>
                                 <th style="text-align: center;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @for($i=1;$i<=4;$i++)
+                            @foreach($laporans as $laporan)
                             <tr class="border-top">
-                                <td data-label="ID Laporan" style="text-align: center;font-family:'poppins';">#LP-2025-00{{ $i }}</td>
-                                <td data-label="Tanggal" style="text-align: center;font-family:'poppins';">2025-12-0{{ $i }}</td>
-                                <td data-label="Lokasi" style="text-align: center;font-family:'poppins';">Jl. Contoh No. {{ $i }}</td>
-                                <td data-label="Jenis" style="text-align: center;font-family:'poppins';">Organik</td>
+                                <td data-label="ID Laporan" style="text-align: center;font-family:'poppins';">#{{ $laporan->id }}</td>
+                                <td data-label="Tanggal" style="text-align: center;font-family:'poppins';">{{ $laporan->created_at->format('Y-m-d') }}</td>
+                                <td data-label="Lokasi" style="text-align: center;font-family:'poppins';">{{ $laporan->lokasi }}</td>
+                                <td data-label="Jenis" style="text-align: center;font-family:'poppins';">{{ $laporan->judul }}</td>
+                                <td data-label="Status" style="text-align: center;font-family:'poppins';">{{ ucfirst($laporan->status) }}</td>
                                 <td data-label="Aksi" class="action-center" style="display:flex; justify-content:center; align-items:center;">
-                                    <button class="detail-btn btn btn-sm" style="background:#d7e2de; color:#000; font-family:'poppins'; padding:6px 10px; border-radius:6px; border:none;" data-bs-toggle="modal" data-bs-target="#updateStatusModal" data-id="#LP-2025-00{{ $i }}" data-status="Menunggu Verifikasi">Lihat Detail</button>
+                                    @if($laporan->status == 'pending')
+                                    <form action="{{ route('petugas.daftar.verify', $laporan->id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm" style="background:#598665; color:#fff; font-family:'poppins'; padding:6px 10px; border-radius:6px; border:none;">Verifikasi</button>
+                                    </form>
+                                    @else
+                                    <span class="text-success">Terverifikasi</span>
+                                    @endif
                                 </td>
                             </tr>
-                            @endfor
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
