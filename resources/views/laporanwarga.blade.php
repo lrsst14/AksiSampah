@@ -1,132 +1,118 @@
 @extends('layouts.warga-layout')
 
 @section('content')
-<div class="container-lg px-3 pt-4">
 
-    <!-- Judul -->
-    <div class="text-center mb-4">
-        <h4 class="fw-bold" style="color:#598665;">
-            <i class="fa-solid fa-trash me-2"></i>Laporan Sampah
-        </h4>
-    </div>
-
-    <!-- Card Form -->
-    <div class="card border-0 shadow-sm mb-4">
-        <div class="card-header bg-white border-bottom" style="border-color:#e0e0e0 !important;">
-            <h6 class="card-title fw-bold mb-0" style="color:#598665;">
-                <i class="fa-solid fa-clipboard me-2"></i>Form Pelaporan Sampah
-            </h6>
+<div class="container-fluid py-4 dashboard-bg">
+    <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between mb-4 gap-3">
+        <div>
+            <h3 class="mb-0" style="font-family:'poppins'; font-weight:700;">Laporan Sampah</h3>
+            <small class="text-muted">Laporkan sampah Anda</small>
         </div>
-        <div class="card-body p-4">
-            <form action="{{ route('warga.laporan.store') }}"
-                method="POST"
-                enctype="multipart/form-data">
-
+    </div>
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="POST" action="{{ route('warga.laporan.store') }}" enctype="multipart/form-data">
                 @csrf
-
                 <div class="mb-4">
-                    <label class="form-label fw-semibold text-muted">
-                        <i class="fa-solid fa-image me-1"></i>
-                        Upload Foto Sampah <span class="text-danger">*</span>
-                    </label>
+                    <h5 class="mb-3"><i class="bi bi-journal-plus"></i> Form Pelaporan Sampah</h5>
 
-                    <input type="file"
-                        class="form-control"
-                        name="foto"
-                        accept="image/*"
-                        required
-                        onchange="previewFoto(event)">
-
-                    <img id="preview"
-                        class="mt-3 rounded d-none"
-                        style="max-width:200px;">
-                </div>
-
-                <div class="mb-4">
-                    <label class="form-label fw-semibold text-muted">
-                        <i class="fa-solid fa-trash me-1"></i>
-                        Jenis Sampah <span class="text-danger">*</span>
-                    </label>
-
-                    <select class="form-select" name="jenis_sampah" required>
-                        <option value="">-- Pilih Jenis Sampah --</option>
-                        <option value="Organik">Organik</option>
-                        <option value="Plastik">Plastik</option>
-                        <option value="Anorganik">Anorganik</option>
-                        <option value="B3">B3</option>
-                    </select>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6 mb-4">
-                        <label class="form-label fw-semibold text-muted">
-                            <i class="fa-solid fa-location-dot me-1"></i>
-                            Lokasi Anda <span class="text-danger">*</span>
-                        </label>
-
-                        <input type="text"
-                            class="form-control rounded-3"
-                            name="lokasi"
-                            placeholder="Masukkan lokasi Anda..."
-                            required>
+                    <div class="mb-3">
+                        <label class="form-label">Upload Foto Sampah <span class="text-danger">*</span></label>
+                        <input type="file" name="foto" accept="image/*" class="form-control" onchange="previewFoto(event)" required>
+                        <img id="preview" src="#" alt="Preview Foto" class="img-thumbnail mt-2 d-none" style="max-height:220px;" />
                     </div>
 
-                    <div class="col-md-6 mb-4">
-                        <label class="form-label fw-semibold text-muted">
-                            <i class="fa-solid fa-file-lines me-1"></i>
-                            Deskripsi Laporan <span class="text-danger">*</span>
-                        </label>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Jenis Sampah <span class="text-danger">*</span></label>
+                            <select name="jenis_sampah" class="form-select" required>
+                                <option value="">-- Pilih Jenis Sampah --</option>
+                                @if(isset($jenisSampah) && count($jenisSampah))
+                                @foreach($jenisSampah as $jenis)
+                                <option value="{{ $jenis->id }}">{{ $jenis->nama }}</option>
+                                @endforeach
+                                @else
+                                <option value="organik">Organik</option>
+                                <option value="anorganik">Anorganik</option>
+                                <option value="b3">B3</option>
+                                @endif
+                            </select>
+                        </div>
 
-                        <textarea class="form-control rounded-3"
-                            rows="5"
-                            style="resize: none;"
-                            name="deskripsi"
-                            placeholder="Tuliskan deskripsi/kondisi sampah yang anda miliki"
-                            required></textarea>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Berat (gram)</label>
+                            <div class="input-group">
+                                <input type="number" name="berat_gram" min="1" class="form-control" placeholder="Berapa gram?">
+                                <span class="input-group-text">gram</span>
+                            </div>
+                            <small class="text-muted">Masukkan estimasi berat sampah dalam gram.</small>
+                        </div>
+
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Pilih Jadwal <span class="text-danger">*</span></label>
+                            <select name="jadwal_id" class="form-select" required>
+                                <option value="">-- Pilih Jadwal --</option>
+                                @if(isset($jadwals) && count($jadwals))
+                                @foreach($jadwals as $jadwal)
+                                <option value="{{ $jadwal->id }}">{{ $jadwal->hari }} — {{ $jadwal->waktu }}</option>
+                                @endforeach
+                                @else
+                                <option value="">(Belum ada jadwal tersedia)</option>
+                                @endif
+                            </select>
+                            <small class="text-muted">Pilih jadwal yang sudah ditentukan petugas.</small>
+                        </div>
                     </div>
-                </div>
 
-                <div class="d-flex justify-content-between mt-4">
-                    <button type="submit"
-                        class="btn px-4"
-                        style="background:#598665; color:white;">
-                        <i class="fa-solid fa-paper-plane me-1"></i>
-                        Kirim
-                    </button>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Lokasi Anda <span class="text-danger">*</span></label>
+                            <input type="text" name="lokasi" class="form-control" placeholder="Masukkan lokasi Anda..." required>
+                        </div>
 
-                    <a href="{{ route('warga.dashboard') }}"
-                        class="btn btn-outline-secondary px-4">
-                        Batal
-                    </a>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Deskripsi Laporan <span class="text-danger">*</span></label>
+                            <textarea name="deskripsi" class="form-control" rows="4" placeholder="Tuliskan deskripsi/kondisi sampah yang anda miliki" required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-3">
+                        <div>
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-send-fill"></i> Kirim
+                            </button>
+                        </div>
+                        <div>
+                            <a href="{{ url()->previous() }}" class="btn btn-outline-secondary">Batal</a>
+                        </div>
+                    </div>
+
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Card Tips -->
-    <div class="card border-0 shadow-sm mb-0">
-        <div class="card-header bg-white border-bottom" style="border-color:#e0e0e0 !important;">
-            <h6 class="card-title fw-bold mb-0" style="color:#598665;">
-                <i class="fa-solid fa-lightbulb me-2"></i>Tips Pelaporan
-            </h6>
-        </div>
-        <div class="card-body p-4">
-            <ul class="mb-0 ps-3">
-                <li class="mb-2">Berikan deskripsi yang jelas dan detail tentang kondisi sampah</li>
-                <li class="mb-2">Cantumkan alamat lengkap untuk memudahkan petugas dalam lokalisasi</li>
+    <div class="card">
+        <div class="card-body">
+            <h6 class="mb-3"><i class="bi bi-lightbulb-fill"></i> Tips Pelaporan</h6>
+            <ul>
+                <li>Berikan deskripsi yang jelas dan detail tentang kondisi sampah</li>
+                <li>Cantumkan alamat lengkap untuk memudahkan petugas dalam lokalisasi</li>
                 <li>Laporan akan diproses dalam 1×24 Jam setelah verifikasi</li>
             </ul>
         </div>
     </div>
 
-</div>
 
-@push('scripts')
-<script>
-    function previewFoto(event) {
-        const img = document.getElementById('preview');
-        img.src = URL.createObjectURL(event.target.files[0]);
-        img.classList.remove('d-none');
-    }
-</script>
-@endpush
+    @push('scripts')
+    <script>
+        function previewFoto(event) {
+            const img = document.getElementById('preview');
+            if (!event.target.files || !event.target.files[0]) return;
+            img.src = URL.createObjectURL(event.target.files[0]);
+            img.classList.remove('d-none');
+        }
+    </script>
+    @endpush
+
+    @endsection
