@@ -1,11 +1,11 @@
 @extends('layouts.warga-layout')
 
 @section('content')
-<div>
-    
+
+<div class="container-fluid py-4 dashboard-bg">
     <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between mb-4 gap-3">
         <div>
-            <h3 class="mb-0 fw-bold">Riwayat Laporan</h3>
+            <h3 class="mb-0" style="font-family: 'poppins'; font-weight:700;">Riwayat Laporan</h3>
             <small class="text-muted">Daftar lengkap laporan yang Anda buat</small>
         </div>
     </div>
