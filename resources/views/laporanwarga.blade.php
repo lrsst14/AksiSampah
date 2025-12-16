@@ -34,8 +34,8 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Judul Laporan</label>
-                        <input type="text" name="judul" class="form-control" placeholder="Masukkan judul laporan (opsional)...">
+                        <label class="form-label">Nama</label>
+                        <input type="text" name="judul" class="form-control" placeholder="Masukkan nama">
                     </div>
 
                     <div class="row">
@@ -72,7 +72,7 @@
                             <select name="jadwal_id" class="form-select" required>
                                 <option value="">-- Pilih Jadwal --</option>
                                 @foreach($jadwals as $jadwal)
-                                <option value="{{ $jadwal->id }}">{{ \Carbon\Carbon::parse($jadwal->tanggal)->format('d/m/Y') }} — {{ $jadwal->waktu }}</option>
+                                <option value="{{ $jadwal->id }}">{{ \Carbon\Carbon::parse($jadwal->tanggal)->format('d/m/Y') }} — {{ \Carbon\Carbon::parse($jadwal->waktu)->format('H:i') }}</option>
                                 @endforeach
                                 @if($jadwals->isEmpty())
                                 <option value="" disabled>(Belum ada jadwal tersedia)</option>

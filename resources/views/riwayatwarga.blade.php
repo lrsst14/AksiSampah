@@ -46,7 +46,7 @@
 
                         {{-- Footer Laporan (Tanggal) --}}
                         <div class="d-flex gap-4 small text-dark border-top pt-2">
-                            <p class="mb-0"><i class="fa-solid fa-calendar-day me-1"></i> Dilaporkan: **{{ $laporan->created_at->format('d/m/Y') }}**</p>
+                            <p class="mb-0"><i class="fa-solid fa-calendar-day me-1"></i> Dilaporkan: {{ $laporan->created_at->format('d/m/Y') }} pukul {{ $laporan->created_at->format('H:i') }}</p>
                             
                             @if($laporan->tanggal_ambil)
                             <p class="mb-0"><i class="fa-solid fa-calendar-check me-1"></i> Dijadwalkan: **{{ \Carbon\Carbon::parse($laporan->tanggal_ambil)->format('d/m/Y') }}**</p>

@@ -124,7 +124,7 @@
                             <h4 class="fw-bold text-success mb-1">
                                 {{ $tanggalFormat }}
                             </h4>
-                            <p class="text-muted">Pukul {{ $nextJadwal->waktu }}</p>
+                            <p class="text-muted">Pukul {{ \Carbon\Carbon::parse($nextJadwal->waktu)->format('H:i') }}</p>
                         @else
                             <h4 class="fw-bold text-muted mb-1">
                                 Tidak ada jadwal

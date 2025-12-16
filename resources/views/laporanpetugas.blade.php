@@ -37,7 +37,7 @@
                             <th style="text-align: center;">ID Laporan</th>
                             <th style="text-align: center;">Tanggal Laporan</th>
                             <th style="text-align: center;">Lokasi</th>
-                            <th style="text-align: center;">Judul</th>
+                            <th style="text-align: center;">Nama</th>
                             <th style="text-align: center;">Aksi</th>
                         </tr>
                     </thead>
@@ -47,7 +47,7 @@
                             <td data-label="ID Laporan" style="text-align: center;font-family:'poppins';">#{{ $laporan->id }}</td>
                             <td data-label="Tanggal" style="text-align: center;font-family:'poppins';">{{ $laporan->created_at->format('Y-m-d') }}</td>
                             <td data-label="Lokasi" style="text-align: center;font-family:'poppins';">{{ $laporan->lokasi }}</td>
-                            <td data-label="Judul" style="text-align: center;font-family:'poppins';">{{ $laporan->judul }}</td>
+                            <td data-label="Nama" style="text-align: center;font-family:'poppins';">{{ $laporan->judul }}</td>
                             <td data-label="Aksi" class="action-center" style="display:flex; justify-content:center; align-items:center;">
                                 <form action="{{ route('petugas.laporan.verify', $laporan->id) }}" method="POST" style="display:inline;">
                                     @csrf
@@ -74,7 +74,7 @@
                             <th style="text-align: center;">ID Laporan</th>
                             <th style="text-align: center;">Tanggal Laporan</th>
                             <th style="text-align: center;">Lokasi</th>
-                            <th style="text-align: center;">Judul</th>
+                            <th style="text-align: center;">Nama</th>
                             <th style="text-align: center;">Status</th>
                         </tr>
                     </thead>
@@ -84,7 +84,7 @@
                             <td data-label="ID Laporan" style="text-align: center;font-family:'poppins';">#{{ $laporan->id }}</td>
                             <td data-label="Tanggal" style="text-align: center;font-family:'poppins';">{{ $laporan->created_at->format('Y-m-d') }}</td>
                             <td data-label="Lokasi" style="text-align: center;font-family:'poppins';">{{ $laporan->lokasi }}</td>
-                            <td data-label="Judul" style="text-align: center;font-family:'poppins';">{{ $laporan->judul }}</td>
+                            <td data-label="Nama" style="text-align: center;font-family:'poppins';">{{ $laporan->judul }}</td>
                             <td data-label="Status" style="text-align: center;font-family:'poppins';">{{ ucfirst($laporan->status) }}</td>
                         </tr>
                         @endforeach
