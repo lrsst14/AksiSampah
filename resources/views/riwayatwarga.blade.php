@@ -10,11 +10,7 @@
         </div>
     </div>
 
-    @if(session('success'))
-    <script>
-        alert('{{ session('success') }}');
-    </script>
-    @endif
+    @if($laporans->count() > 0)
         <div class="row g-4">
             @foreach($laporans as $laporan)
             <div class="col-12">
