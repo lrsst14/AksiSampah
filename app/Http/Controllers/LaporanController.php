@@ -37,8 +37,9 @@ class LaporanController extends Controller
 
     public function index()
     {
-        $laporans = Laporan::with('user')->orderBy('created_at', 'desc')->get();
-        return view('petugas.laporan.index', compact('laporans'));
+        $pendingLaporans = Laporan::with('user')->where('status', 'pending')->orderBy('created_at', 'desc')->get();
+        $verifiedLaporans = Laporan::with('user')->where('status', 'verified')->orderBy('created_at', 'desc')->get();
+        return view('laporanpetugas', compact('pendingLaporans', 'verifiedLaporans'));
     }
 
     public function verify(Request $request, $id)

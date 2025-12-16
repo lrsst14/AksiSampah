@@ -25,47 +25,74 @@
 
     <h3 class="text-center mb-4" style="font-family:'poppins'; font-weight: bold;">Daftar Laporan Masuk</h3>
 
-        <div class="card mb-4" style="border-radius:12px;background-color:#F4F7F2;">
-            <div class="card-body">
-                <h6 class="mb-3" style="font-family:'poppins';">Prioritas : Menunggu Verifikasi</h6>
+    <!-- Pending Laporans -->
+    <div class="card mb-4" style="border-radius:12px;background-color:#F4F7F2;">
+        <div class="card-body">
+            <h6 class="mb-3" style="font-family:'poppins';">Menunggu Verifikasi</h6>
 
-                <div class="table-responsive">
-                    <table class="table table-borderless align-middle">
-                        <thead>
-                            <tr class="text-muted small" style="text-align: center;font-family:'poppins';">
-                                <th style="text-align: center;">ID Laporan</th>
-                                <th style="text-align: center;">Tanggal Laporan</th>
-                                <th style="text-align: center;">Lokasi</th>
-                                <th style="text-align: center;">Judul</th>
-                                <th style="text-align: center;">Status</th>
-                                <th style="text-align: center;">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($laporans as $laporan)
-                            <tr class="border-top">
-                                <td data-label="ID Laporan" style="text-align: center;font-family:'poppins';">#{{ $laporan->id }}</td>
-                                <td data-label="Tanggal" style="text-align: center;font-family:'poppins';">{{ $laporan->created_at->format('Y-m-d') }}</td>
-                                <td data-label="Lokasi" style="text-align: center;font-family:'poppins';">{{ $laporan->lokasi }}</td>
-                                <td data-label="Jenis" style="text-align: center;font-family:'poppins';">{{ $laporan->judul }}</td>
-                                <td data-label="Status" style="text-align: center;font-family:'poppins';">{{ ucfirst($laporan->status) }}</td>
-                                <td data-label="Aksi" class="action-center" style="display:flex; justify-content:center; align-items:center;">
-                                    @if($laporan->status == 'pending')
-                                    <form action="{{ route('petugas.laporan.verify', $laporan->id) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        <button type="submit" class="btn btn-sm" style="background:#598665; color:#fff; font-family:'poppins'; padding:6px 10px; border-radius:6px; border:none;">Verifikasi</button>
-                                    </form>
-                                    @else
-                                    <span class="text-success">Terverifikasi</span>
-                                    @endif
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+            <div class="table-responsive">
+                <table class="table table-borderless align-middle">
+                    <thead>
+                        <tr class="text-muted small" style="text-align: center;font-family:'poppins';">
+                            <th style="text-align: center;">ID Laporan</th>
+                            <th style="text-align: center;">Tanggal Laporan</th>
+                            <th style="text-align: center;">Lokasi</th>
+                            <th style="text-align: center;">Judul</th>
+                            <th style="text-align: center;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($pendingLaporans as $laporan)
+                        <tr class="border-top">
+                            <td data-label="ID Laporan" style="text-align: center;font-family:'poppins';">#{{ $laporan->id }}</td>
+                            <td data-label="Tanggal" style="text-align: center;font-family:'poppins';">{{ $laporan->created_at->format('Y-m-d') }}</td>
+                            <td data-label="Lokasi" style="text-align: center;font-family:'poppins';">{{ $laporan->lokasi }}</td>
+                            <td data-label="Judul" style="text-align: center;font-family:'poppins';">{{ $laporan->judul }}</td>
+                            <td data-label="Aksi" class="action-center" style="display:flex; justify-content:center; align-items:center;">
+                                <form action="{{ route('petugas.laporan.verify', $laporan->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm" style="background:#598665; color:#fff; font-family:'poppins'; padding:6px 10px; border-radius:6px; border:none;">Verifikasi</button>
+                                </form>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
+    </div>
+
+    <!-- Verified Laporans -->
+    <div class="card mb-4" style="border-radius:12px;background-color:#F4F7F2;">
+        <div class="card-body">
+            <h6 class="mb-3" style="font-family:'poppins';">Laporan Terverifikasi</h6>
+
+            <div class="table-responsive">
+                <table class="table table-borderless align-middle">
+                    <thead>
+                        <tr class="text-muted small" style="text-align: center;font-family:'poppins';">
+                            <th style="text-align: center;">ID Laporan</th>
+                            <th style="text-align: center;">Tanggal Laporan</th>
+                            <th style="text-align: center;">Lokasi</th>
+                            <th style="text-align: center;">Judul</th>
+                            <th style="text-align: center;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($verifiedLaporans as $laporan)
+                        <tr class="border-top">
+                            <td data-label="ID Laporan" style="text-align: center;font-family:'poppins';">#{{ $laporan->id }}</td>
+                            <td data-label="Tanggal" style="text-align: center;font-family:'poppins';">{{ $laporan->created_at->format('Y-m-d') }}</td>
+                            <td data-label="Lokasi" style="text-align: center;font-family:'poppins';">{{ $laporan->lokasi }}</td>
+                            <td data-label="Judul" style="text-align: center;font-family:'poppins';">{{ $laporan->judul }}</td>
+                            <td data-label="Status" style="text-align: center;font-family:'poppins';">{{ ucfirst($laporan->status) }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
         <!-- Filters (Status / Lokasi / Jenis Sampah / Search) -->
         <div class="d-flex gap-2 mb-3 filters-row">

@@ -23,12 +23,10 @@ Route::get('/', function () {
 Route::view('/dashboardpetugas', 'dashboardpetugas')->name('petugas.dashboard');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/petugas/laporan', [LaporanController::class, 'index'])->name('petugas.laporan');
-    Route::post('/petugas/laporan/{id}/verify', [LaporanController::class, 'verify'])->name('petugas.laporan.verify');
-    Route::get('/petugas/jadwal', [JadwalController::class, 'index'])->name('petugas.jadwal');
-    Route::post('/petugas/jadwal', [JadwalController::class, 'store'])->name('petugas.jadwal.store');
-    Route::put('/petugas/jadwal/{jadwal}', [JadwalController::class, 'update'])->name('petugas.jadwal.update');
-    Route::delete('/petugas/jadwal/{jadwal}', [JadwalController::class, 'destroy'])->name('petugas.jadwal.destroy');
+    // Warga routes
+    Route::get('/warga/dashboard', function () {
+        return view('dashboardwarga');
+    })->name('warga.dashboard');
 
     Route::get('/warga/laporan', function () {
         return view('laporanwarga');
@@ -44,7 +42,8 @@ Route::middleware(['auth'])->group(function () {
     })->name('warga.riwayat');
 
     Route::get('/warga/jadwal', function () {
-        return view('jadwalwarga');
+        $jadwals = \App\Models\Jadwal::orderBy('tanggal', 'desc')->get();
+        return view('jadwalwarga', compact('jadwals'));
     })->name('warga.jadwal');
 
     Route::get('/warga/edukasi', function () {

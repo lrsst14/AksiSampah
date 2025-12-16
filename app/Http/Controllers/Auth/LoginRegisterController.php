@@ -32,7 +32,7 @@ class LoginRegisterController extends Controller
 
         if (Auth::attempt($credentials, $request->has('remember'))) {
             $request->session()->regenerate();
-            return redirect()->intended('/');
+            return redirect()->route('warga.dashboard');
         }
 
         return back()->withErrors(['email' => 'Credentials not match our records.'])->withInput($request->only('email'));

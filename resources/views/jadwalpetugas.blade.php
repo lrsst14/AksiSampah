@@ -70,6 +70,7 @@
                             <td style="text-align: center;font-family:'poppins';">{{ $jadwal->waktu->format('H:i') }}</td>
                             <td style="text-align: center;font-family:'poppins';">{{ $jadwal->deskripsi ?? '-' }}</td>
                             <td style="text-align: center;">
+                                <button class="btn btn-warning btn-sm me-2" data-bs-toggle="modal" data-bs-target="#editModal" onclick="editJadwal({{ $jadwal->id }}, '{{ $jadwal->tanggal->format('Y-m-d') }}', '{{ $jadwal->waktu->format('H:i') }}', '{{ addslashes($jadwal->lokasi) }}', '{{ addslashes($jadwal->deskripsi ?? '') }}')">Edit</button>
                                 <form action="{{ route('petugas.jadwal.destroy', $jadwal) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
@@ -86,4 +87,54 @@
 
 </div>
 
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Jadwal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editForm" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="editTanggal" class="form-label">Tanggal</label>
+                        <input type="date" class="form-control" id="editTanggal" name="tanggal" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editWaktu" class="form-label">Waktu</label>
+                        <input type="time" class="form-control" id="editWaktu" name="waktu" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editLokasi" class="form-label">Lokasi</label>
+                        <input type="text" class="form-control" id="editLokasi" name="lokasi" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editDeskripsi" class="form-label">Deskripsi</label>
+                        <textarea class="form-control" id="editDeskripsi" name="deskripsi" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @endsection
+
+@push('scripts')
+<script>
+function editJadwal(id, tanggal, waktu, lokasi, deskripsi) {
+    document.getElementById('editForm').action = '{{ url("petugas/jadwal") }}/' + id;
+    document.getElementById('editTanggal').value = tanggal;
+    document.getElementById('editWaktu').value = waktu;
+    document.getElementById('editLokasi').value = lokasi;
+    document.getElementById('editDeskripsi').value = deskripsi;
+}
+</script>
+@endpush
