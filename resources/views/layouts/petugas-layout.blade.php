@@ -155,7 +155,7 @@
             {{-- Compact user block for small screens (kept outside collapse so it stays on one line) --}}
             <div class="d-flex align-items-center gap-2 ms-auto d-lg-none">
                 <img src="{{ asset('img/avatar.png') }}" height="36" alt="Avatar" class="user-avatar">
-                <span class="d-none d-sm-inline user-name">Nama Petugas</span>
+                <span class="d-none d-sm-inline user-name">{{ Auth::user()->name ?? 'Petugas' }}</span>
                 <form method="POST" action="{{ route('logout') }}" class="d-inline ms-2">
                     @csrf
                     <button type="submit" aria-label="Logout" title="Logout" class="p-0 text-dark text-decoration-none" style="border:none; background:transparent;">
@@ -195,7 +195,7 @@
                 {{-- USER --}}
                 <div class="d-flex align-items-center gap-2 ms-lg-3 justify-content-center d-none d-lg-flex">
                     <img src="{{ asset('img/avatar.png') }}" height="36" alt="Avatar" class="user-avatar">
-                    <span class="d-none d-lg-inline user-name">Nama Petugas</span>
+                    <span class="d-none d-lg-inline user-name">{{ Auth::user()->name ?? 'Petugas' }}</span>
 
                     {{-- Logout using a POST form to match Laravel's logout route --}}
                     <form method="POST" action="{{ route('logout') }}" class="d-inline ms-2">

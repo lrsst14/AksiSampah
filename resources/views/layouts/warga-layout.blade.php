@@ -90,10 +90,13 @@
                 {{-- USER --}}
                 <div class="d-flex align-items-center gap-2 ms-lg-3 justify-content-center">
                     <img src="https://ui-avatars.com/api/?name=Warga" class="rounded-circle" height="36">
-                    <span class="d-none d-lg-inline">Nama Warga</span>
-                    <button class="btn btn-outline-dark btn-sm">
-                        <i class="fa fa-right-from-bracket"></i>
-                    </button>
+                    <span class="d-none d-lg-inline">{{ Auth::user()->name ?? 'Warga' }}</span>
+                    <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-dark btn-sm" title="Logout">
+                            <i class="fa fa-right-from-bracket"></i>
+                        </button>
+                    </form>
                 </div>
 
             </div>
