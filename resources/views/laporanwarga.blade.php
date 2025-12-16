@@ -33,6 +33,11 @@
                         <img id="preview" src="#" alt="Preview Foto" class="img-thumbnail mt-2 d-none" style="max-height:220px;" />
                     </div>
 
+                    <div class="mb-3">
+                        <label class="form-label">Judul Laporan</label>
+                        <input type="text" name="judul" class="form-control" placeholder="Masukkan judul laporan (opsional)...">
+                    </div>
+
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Jenis Sampah <span class="text-danger">*</span></label>

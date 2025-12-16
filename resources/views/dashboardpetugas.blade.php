@@ -114,18 +114,27 @@
         </div>
     </div>
 
+@php
+    $pendingCount = \App\Models\Laporan::where('status', 'pending')->count();
+    $verifiedCount = \App\Models\Laporan::where('status', 'verified')->count();
+@endphp
+
 {{-- STATISTIK STATUS --}}
 <div class="row text-center mb-4">
     <div class="col-md-6">
         <div class="card border-0 shadow-sm p-3 dashboard-card">
-            <span class="text-muted">Menunggu Verifikasi</span>
-            <h3 class="text-warning fw-bold">10</h3>
+            <a href="{{ route('petugas.laporan') }}" class="text-decoration-none text-dark">
+                <span class="text-muted">Menunggu Verifikasi</span>
+                <h3 class="text-warning fw-bold">{{ $pendingCount }}</h3>
+            </a>
         </div>
     </div>
     <div class="col-md-6">
         <div class="card border-0 shadow-sm p-3 dashboard-card">
-            <span class="text-muted">Terverifikasi</span>
-            <h3 class="text-success fw-bold">7</h3>
+            <a href="{{ route('petugas.laporan') }}" class="text-decoration-none text-dark">
+                <span class="text-muted">Terverifikasi</span>
+                <h3 class="text-success fw-bold">{{ $verifiedCount }}</h3>
+            </a>
         </div>
     </div>
 </div>
@@ -166,7 +175,7 @@
                 @endphp
                 @if($nextJadwal)
                     <div class="fw-bold text-success" id="jadwalDate">{{ $tanggalFormat }}</div>
-                    <div class="text-muted small" id="jadwalTime">Pukul {{ $nextJadwal->waktu }}</div>
+                    <div class="text-muted small" id="jadwalTime">Pukul {{ \Carbon\Carbon::parse($nextJadwal->waktu)->format('H:i') }}</div>
                 @else
                     <div class="fw-bold text-muted" id="jadwalDate">Tidak ada jadwal</div>
                     <div class="text-muted small" id="jadwalTime">Belum ada jadwal pengangkutan</div>

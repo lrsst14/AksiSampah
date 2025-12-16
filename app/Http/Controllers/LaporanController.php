@@ -12,7 +12,7 @@ class LaporanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'judul' => 'required|string|max:255',
+            'judul' => 'nullable|string|max:255',
             'deskripsi' => 'required|string',
             'lokasi' => 'required|string|max:255',
             'jenis_sampah' => 'required|string|max:255',
@@ -34,7 +34,7 @@ class LaporanController extends Controller
 
         Laporan::create([
             'user_id' => Auth::id(),
-            'judul' => $request->judul,
+            'judul' => $request->judul ?: 'Laporan Sampah',
             'deskripsi' => $request->deskripsi,
             'lokasi' => $request->lokasi,
             'jenis_sampah' => $request->jenis_sampah,
