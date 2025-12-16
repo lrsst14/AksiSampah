@@ -40,9 +40,9 @@
                         </div>
 
                         <div class="col-md-3 mb-3">
-                            <label class="form-label">Berat (gram)</label>
+                            <label class="form-label">Berat (gram) <span class="text-danger">*</span></label>
                             <div class="input-group">
-                                <input type="number" name="berat_gram" min="1" class="form-control" placeholder="Berapa gram?">
+                                <input type="number" name="gram" min="1" class="form-control" placeholder="Berapa gram?" required>
                                 <span class="input-group-text">gram</span>
                             </div>
                             <small class="text-muted">Masukkan estimasi berat sampah dalam gram.</small>

@@ -25,6 +25,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'poin',
     ];
 
     protected $hidden = [
@@ -38,6 +39,7 @@ class User extends Authenticatable
         'id' => 'int',
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'poin' => 'int',
     ];
 
     public function initials(): string

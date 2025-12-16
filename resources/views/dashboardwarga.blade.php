@@ -121,14 +121,14 @@
 
                     <div class="text-center">
                         <h1 class="fw-bold display-4 text-primary mb-3">
-                            12.500 <span class="fs-4 text-muted">pts</span>
+                            {{ Auth::user()->poin }} <span class="fs-4 text-muted">pts</span>
                         </h1>
                     </div>
 
                     <div class="small text-center mt-2">
-                        <p class="mb-1">Expired pada: <strong>31/12/2025</strong></p>
+                        <p class="mb-1">Poin diperoleh dari laporan sampah</p>
                         <p class="fw-bold text-success">
-                            Selamat! Anda merupakan member Platinum!
+                            10 poin per 100 gram sampah
                         </p>
                     </div>
                 </div>
