@@ -3,11 +3,11 @@ FROM php:8.3-fpm
 # Install ekstensi yang dibutuhkan Laravel
 RUN apt-get update && apt-get install -y \
     libpng-dev libonig-dev libxml2-dev libpq-dev zip unzip git curl \
-    # --- START: Penambahan untuk Node.js ---
-    software-properties-common dirmngr gnupg \
+    # --- START: Revisi Node.js ---
+    dirmngr gnupg \
     && curl -sL https://deb.nodesource.com/setup_lts.x | bash - \
     && apt-get install -y nodejs \
-    # --- END: Penambahan untuk Node.js ---
+    # --- END: Revisi Node.js ---
     && docker-php-ext-install pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd \
     && rm -rf /var/lib/apt/lists/*
 
