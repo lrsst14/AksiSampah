@@ -108,19 +108,21 @@
                 <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" style="font-family:'poppins'; ">Lokasi</button>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Semua</a></li>
-                    <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Lokasi A</a></li>
-                    <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Lokasi B</a></li>
-                    <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Lokasi C</a></li>
-                    <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Lokasi D</a></li>
+                    @php
+                        $lokasiJadwal = \App\Models\Jadwal::distinct()->pluck('lokasi')->toArray();
+                    @endphp
+                    @foreach($lokasiJadwal as $lokasi)
+                    <li><a class="dropdown-item" href="#" style="font-family:'poppins';">{{ $lokasi }}</a></li>
+                    @endforeach
                 </ul>
             </div>
             <div class="dropdown">
                 <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" style="font-family:'poppins';">Jenis Sampah</button>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Semua</a></li>
-                    <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Organik</a></li>
-                    <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Anorganik</a></li>
-                    <li><a class="dropdown-item" href="#" style="font-family:'poppins';">Plastik</a></li>
+                    <li><a class="dropdown-item" href="#" style="font-family:'poppins';">organik</a></li>
+                    <li><a class="dropdown-item" href="#" style="font-family:'poppins';">anorganik</a></li>
+                    <li><a class="dropdown-item" href="#" style="font-family:'poppins';">b3</a></li>
                 </ul>
             </div>
 <div class="ms-auto">
@@ -142,6 +144,7 @@
                                 <th style="font-family:'poppins'; font-weight: bold;">ID Laporan</th>
                                 <th style="font-family:'poppins'; font-weight: bold;">Tanggal Laporan</th>
                                 <th style="font-family:'poppins'; font-weight: bold;">Lokasi</th>
+                                <th style="font-family:'poppins'; font-weight: bold;">Nama</th>
                                 <th style="font-family:'poppins'; font-weight: bold;">Jenis Sampah</th>
                                 <th style="text-align:center;font-family:'poppins'; font-weight: bold;">Aksi</th>
                             </tr>
@@ -155,9 +158,10 @@
                                 <td data-label="ID Laporan" style="text-align: center;font-family:'poppins'; ">#{{ $laporan->id }}</td>
                                 <td data-label="Tanggal" style="text-align: center ;font-family:'poppins'; ">{{ $laporan->created_at->format('Y-m-d') }}</td>
                                 <td data-label="Lokasi" style="text-align: center;font-family:'poppins'; ">{{ $laporan->lokasi }}</td>
+                                <td data-label="Nama" style="text-align: center;font-family:'poppins'; ">{{ $laporan->user->name }}</td>
                                 <td data-label="Jenis" style="text-align: center;font-family:'poppins';">{{ $laporan->jenis_sampah ?? 'N/A' }}</td>
                                 <td data-label="Aksi" class="action-center" style="display:flex; justify-content:center; align-items:center;">
-                                    <button class="detail-btn btn btn-sm" style="background-color: #d7e2de; font-family:'poppins'; color:#000; padding:6px 10px; border-radius:6px; border:none;" data-bs-toggle="modal" data-bs-target="#updateStatusModal" data-id="#{{ $laporan->id }}" data-status="{{ ucfirst($laporan->status) }}">Lihat Detail</button>
+                                    <span style="font-family:'poppins';">{{ $laporan->status == 'pending' ? 'Menunggu Verifikasi' : 'Terverifikasi' }}</span>
                                 </td>
                             </tr>
                             @endforeach

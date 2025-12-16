@@ -77,6 +77,10 @@
                                     data-lokasi="{{ htmlentities($jadwal->lokasi) }}"
                                     data-deskripsi="{{ htmlentities($jadwal->deskripsi ?? '') }}"
                                     onclick="editJadwalFromBtn(this)">Edit</button>
+                                <form action="{{ route('petugas.jadwal.complete', $jadwal) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    <button type="submit" class="btn btn-success btn-sm me-2" onclick="return confirm('Tandai jadwal ini sebagai selesai?')">Selesai</button>
+                                </form>
                                 <form action="{{ route('petugas.jadwal.destroy', $jadwal) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')

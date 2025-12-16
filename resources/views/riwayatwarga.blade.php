@@ -39,14 +39,14 @@
                             <p class="mb-1"><i class="fa-solid fa-location-dot me-2"></i> {{ $laporan->lokasi ?? 'Alamat tidak tersedia' }}</p>
                             <p class="mb-1"><i class="fa-solid fa-weight-hanging me-2"></i> {{ $laporan->gram ?? 0 }} gram</p>
                             @if($laporan->jadwal)
-                            <p class="mb-1"><i class="fa-solid fa-calendar-check me-2"></i> Jadwal: {{ \Carbon\Carbon::parse($laporan->jadwal->tanggal)->format('d/m/Y') }} — {{ $laporan->jadwal->waktu }}</p>
+                            <p class="mb-1"><i class="fa-solid fa-calendar-check me-2"></i> Jadwal: {{ \Carbon\Carbon::parse($laporan->jadwal->tanggal)->format('d/m/Y') }} — {{ \Carbon\Carbon::parse($laporan->jadwal->waktu)->format('H:i') }}</p>
                             @endif
                             <p class="mb-2">{{ $laporan->deskripsi ?? 'Tidak ada deskripsi.' }}</p>
                         </div>
 
                         {{-- Footer Laporan (Tanggal) --}}
                         <div class="d-flex gap-4 small text-dark border-top pt-2">
-                            <p class="mb-0"><i class="fa-solid fa-calendar-day me-1"></i> Dilaporkan: {{ $laporan->created_at->format('d/m/Y') }} pukul {{ $laporan->created_at->format('H:i') }}</p>
+                            <p class="mb-0"><i class="fa-solid fa-calendar-day me-1"></i> Dilaporkan: {{ $laporan->created_at->setTimezone('Asia/Jakarta')->format('d/m/Y') }} pukul {{ $laporan->created_at->setTimezone('Asia/Jakarta')->format('H:i') }}</p>
                             
                             @if($laporan->tanggal_ambil)
                             <p class="mb-0"><i class="fa-solid fa-calendar-check me-1"></i> Dijadwalkan: **{{ \Carbon\Carbon::parse($laporan->tanggal_ambil)->format('d/m/Y') }}**</p>

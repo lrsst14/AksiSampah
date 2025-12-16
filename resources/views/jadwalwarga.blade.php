@@ -65,10 +65,16 @@
                         </div>
                     </div>
 
-                    <!-- Terjadwal Badge -->
+                    <!-- Status Badge -->
+                    @if($jadwal->status == 'selesai')
+                    <span style="background-color: #28a745; color: white; border-radius: 20px; font-weight: 600; font-size: 0.75rem; padding: 6px 14px; font-family:'poppins'; white-space: nowrap; margin-left: 10px;">
+                        Selesai
+                    </span>
+                    @else
                     <span style="background-color: transparent; border: 2px solid #598665; color: #598665; border-radius: 20px; font-weight: 600; font-size: 0.75rem; padding: 6px 14px; font-family:'poppins'; white-space: nowrap; margin-left: 10px;">
                         Terjadwal
                     </span>
+                    @endif
                 </div>
                 @endforeach
             </div>

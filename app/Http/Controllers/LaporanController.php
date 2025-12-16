@@ -21,6 +21,14 @@ class LaporanController extends Controller
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+        $jadwal = \App\Models\Jadwal::find($request->jadwal_id);
+        $laporanLokasiWords = explode(' ', strtolower($request->lokasi));
+        $jadwalLokasiWords = explode(' ', strtolower($jadwal->lokasi));
+        $intersection = array_intersect($laporanLokasiWords, $jadwalLokasiWords);
+        if (empty($intersection)) {
+            return back()->withErrors(['lokasi' => 'Lokasi Anda tidak cocok dengan jadwal yang dipilih. Pastikan ada kata kunci yang sama.']);
+        }
+
         $fotoPath = null;
         if ($request->hasFile('foto')) {
             $fotoPath = $request->file('foto')->store('laporan-foto', 'public');

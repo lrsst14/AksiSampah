@@ -57,12 +57,12 @@
                     <div class="col-12 col-lg-6">
                         <h6 class="text-muted small mb-2">Total Sampah (Kg)</h6>
                         {{-- Container untuk Grafik --}}
-                        <div class="bg-light p-5 border rounded d-flex justify-content-center align-items-center" style="min-height: 200px;">
-                            Grafik Placeholder
+                        <div class="bg-light p-3 border rounded d-flex justify-content-center align-items-center" style="min-height: 200px;">
+                            <canvas id="sampahChart" style="max-width:100%; max-height:180px;"></canvas>
                         </div>
                         <div class="d-flex justify-content-around mt-2 small fw-bold text-center">
-                            <span>Bulan Ini (X gram)</span>
-                            <span>Bulan Lalu (Y gram)</span>
+                            <span>Bulan Ini ({{ number_format($currentMonthGram / 1000, 1) }} kg)</span>
+                            <span>Bulan Lalu ({{ number_format($lastMonthGram / 1000, 1) }} kg)</span>
                         </div>
                     </div>
                     {{-- Grafik Persentase Jenis Sampah --}}
@@ -70,15 +70,15 @@
                         <h6 class="text-muted small mb-2">Persentase Jenis Sampah</h6>
                         <div class="d-flex align-items-center gap-4">
                             {{-- Container untuk Donut Chart --}}
-                            <div class="bg-light p-4 border rounded d-flex justify-content-center align-items-center" style="min-height: 200px; width: 50%;">
-                                Chart Placeholder
+                            <div class="bg-light p-3 border rounded d-flex justify-content-center align-items-center" style="min-height: 200px; width: 50%;">
+                                <canvas id="jenisChart" style="max-width:100%; max-height:180px;"></canvas>
                             </div>
                             {{-- Keterangan --}}
                             <div class="small">
-                                <p class="mb-1"><i class="fa fa-circle text-info me-2"></i> Anorganik</p>
-                                <p class="mb-1"><i class="fa fa-circle text-success me-2"></i> Organik</p>
-                                <p class="mb-1"><i class="fa fa-circle text-warning me-2"></i> Plastik</p>
-                                <p class="mb-1"><i class="fa fa-circle text-danger me-2"></i> B3</p>
+                                <p class="mb-1"><i class="fa fa-circle text-info me-2"></i> Anorganik ({{ $jenisPercentages['anorganik'] }}%)</p>
+                                <p class="mb-1"><i class="fa fa-circle text-success me-2"></i> Organik ({{ $jenisPercentages['organik'] }}%)</p>
+                                <p class="mb-1"><i class="fa fa-circle text-warning me-2"></i> Plastik ({{ $jenisPercentages['plastik'] }}%)</p>
+                                <p class="mb-1"><i class="fa fa-circle text-danger me-2"></i> B3 ({{ $jenisPercentages['b3'] }}%)</p>
                             </div>
                         </div>
                     </div>
@@ -169,3 +169,68 @@
 
 </div>
     @endsection
+
+@push('scripts')
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+    // Bar chart for total sampah
+    const sampahCtx = document.getElementById('sampahChart');
+    if(sampahCtx){
+        const currentKg = {{ $currentMonthGram / 1000 }};
+        const lastKg = {{ $lastMonthGram / 1000 }};
+        new Chart(sampahCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Bulan Ini', 'Bulan Lalu'],
+                datasets: [{
+                    label: 'Kg',
+                    data: [currentKg, lastKg],
+                    backgroundColor: ['rgba(89,134,101,0.8)', 'rgba(200,200,200,0.8)'],
+                    borderColor: ['#598665', '#ccc'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+    }
+
+    // Donut chart for jenis sampah
+    const jenisCtx = document.getElementById('jenisChart');
+    if(jenisCtx){
+        const percentages = @json($jenisPercentages);
+        new Chart(jenisCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Anorganik', 'Organik', 'Plastik', 'B3'],
+                datasets: [{
+                    data: [percentages.anorganik, percentages.organik, percentages.plastik, percentages.b3],
+                    backgroundColor: ['#17a2b8', '#28a745', '#ffc107', '#dc3545'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+    }
+});
+</script>
+@endpush

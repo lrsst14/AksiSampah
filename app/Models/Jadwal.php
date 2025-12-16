@@ -14,10 +14,12 @@ class Jadwal extends Model
         'waktu',
         'lokasi',
         'deskripsi',
+        'status',
     ];
 
     protected $casts = [
         'tanggal' => 'date',
         'waktu' => 'datetime:H:i',
+        'status' => 'string',
     ];
 }

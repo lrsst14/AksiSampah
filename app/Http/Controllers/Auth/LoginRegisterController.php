@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Models\UserWarga;
+use App\Models\UserPetugas;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Str;
 
 class LoginRegisterController extends Controller
 {
@@ -126,21 +131,36 @@ class LoginRegisterController extends Controller
     /**
      * Handle petugas forgot password
      */
-    public function petugasForgotPassword(Request $request)
+    public function showPetugasResetPasswordForm(Request $request, $token = null)
+    {
+        return view('livewire.auth.petugas.reset-password')->with(
+            ['token' => $token, 'email' => $request->email]
+        );
+    }
+
+    public function petugasResetPassword(Request $request)
     {
         $request->validate([
+            'token' => 'required',
             'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
         ]);
 
-        // Cek apakah email ada di database
-        $user = User::where('email', $request->email)->first();
+        $status = Password::broker('userspetugas')->reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->setRememberToken(Str::random(60));
 
-        if (!$user) {
-            return back()->withErrors(['email' => 'Email tidak ditemukan.']);
-        }
+                $user->save();
 
-        // Di sini bisa ditambahkan logic untuk mengirim reset link
-        // Untuk sekarang, hanya menampilkan pesan sukses
-        return back()->with('status', 'Link reset password telah dikirim ke email Anda!');
+                event(new PasswordReset($user));
+            }
+        );
+
+        return $status === Password::PASSWORD_RESET
+            ? redirect()->route('petugas.login')->with('status', __($status))
+            : back()->withErrors(['email' => [__($status)]]);
     }
 }

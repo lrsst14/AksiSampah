@@ -192,28 +192,33 @@
 
     <div class="col-md-6">
         <div class="card border-0 shadow-sm p-4 h-100">
-            <h6 class="fw-semibold">Ringkasan Laporan Hari Ini</h6>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="fw-semibold mb-0">Ringkasan Laporan Hari Ini</h6>
+                <button id="refreshRingkasan" class="btn btn-sm btn-outline-secondary" title="Perbarui data">
+                    <i class="fa-solid fa-sync-alt"></i> Perbarui
+                </button>
+            </div>
 
                 <div class="d-flex align-items-center gap-3 ringkasan-row">
                 <div class="flex-grow-1">
-                    <small class="text-muted">Periode: Hari ini &middot; Terakhir diperbarui {{ now()->format('d M Y H:i') }}</small>
+                    <small class="text-muted">Periode: Hari ini &middot; Terakhir diperbarui {{ now()->setTimezone('Asia/Jakarta')->format('d M Y H:i') }}</small>
 <div class="d-flex gap-2 mt-3" id="ringkasanBadges">
-                        <span class="badge bg-warning text-dark" id="badge-menunggu">Menunggu: 10</span>
-                        <span class="badge bg-success" id="badge-terverifikasi">Terverifikasi: 7</span>
+                        <span class="badge bg-warning text-dark" id="badge-menunggu">Menunggu: {{ $pendingToday }}</span>
+                        <span class="badge bg-success" id="badge-terverifikasi">Terverifikasi: {{ $verifiedToday }}</span>
                     </div>  
 
                     <div class="mt-3">
                         <div class="progress" style="height:10px; background:#e9f3ec; border-radius:6px; overflow:hidden;">
-                            <div class="progress-bar" role="progressbar" id="ringkasanProgress" style="width:35%; background:#3f8a63;"></div>
+                            <div class="progress-bar" role="progressbar" id="ringkasanProgress" style="width:{{ $percentage }}%; background:#3f8a63;"></div>
                         </div>
-                        <small class="text-muted" id="ringkasanProgressText">35% laporan selesai hari ini</small> 
+                        <small class="text-muted" id="ringkasanProgressText">{{ $percentage }}% laporan terverifikasi hari ini</small> 
                     </div>
                 </div>
 
                 <div class="ringkasan-widget">
                     <canvas id="ringkasanChart"></canvas>
                     <div class="position-absolute top-50 start-50 translate-middle text-center text-dark" id="ringkasanCenter" role="status" aria-live="polite" style="pointer-events:none;">
-                        <strong id="ringkasanTotal" style="font-size:18px;">34</strong>
+                        <strong id="ringkasanTotal" style="font-size:18px;">{{ $totalToday }}</strong>
                         <div class="small text-muted">Total</div>
                     </div>
                 </div>
@@ -233,9 +238,9 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function(){
-    // Monthly sample data (replace with real data later)
+    // Monthly data from backend
     const labels = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agt','Sep','Okt','Nov','Des'];
-    const data = [12, 19, 8, 14, 22, 18, 24, 16, 9, 12, 20, 15];
+    const data = @json($monthlyData);
 
     const ctx = document.getElementById('laporanChart');
     if(ctx){
@@ -325,7 +330,7 @@ function shiftDateBy(days){
                 }
             }
             setRingCanvasSize();
-        const ringData = [10, 7];
+        const ringData = [{{ $pendingToday }}, {{ $verifiedToday }}];
         const ringLabels = ['Menunggu Verifikasi','Terverifikasi'];
         // expose to global so modal logic can update counts
         window.ringData = ringData;
@@ -410,6 +415,11 @@ labels: ringLabels,
         document.getElementById('badge-terverifikasi').textContent = 'Terverifikasi: ' + window.ringData[1];
         document.getElementById('ringkasanProgress').style.width = selesaiPct + '%';
         document.getElementById('ringkasanProgressText').textContent = selesaiPct + '% laporan terverifikasi hari ini';
+
+        // Refresh button
+        document.getElementById('refreshRingkasan').addEventListener('click', function() {
+            location.reload();
+        });
     }});
 </script>
 

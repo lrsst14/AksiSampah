@@ -47,4 +47,11 @@ class JadwalController extends Controller
 
         return redirect()->route('petugas.jadwal')->with('success', 'Jadwal berhasil dihapus.');
     }
+
+    public function complete(Jadwal $jadwal)
+    {
+        $jadwal->update(['status' => 'selesai']);
+
+        return redirect()->route('petugas.jadwal')->with('success', 'Jadwal berhasil diselesaikan.');
+    }
 }
