@@ -51,7 +51,7 @@
                                 <td data-label="Status" style="text-align: center;font-family:'poppins';">{{ ucfirst($laporan->status) }}</td>
                                 <td data-label="Aksi" class="action-center" style="display:flex; justify-content:center; align-items:center;">
                                     @if($laporan->status == 'pending')
-                                    <form action="{{ route('petugas.daftar.verify', $laporan->id) }}" method="POST" style="display:inline;">
+                                    <form action="{{ route('petugas.laporan.verify', $laporan->id) }}" method="POST" style="display:inline;">
                                         @csrf
                                         <button type="submit" class="btn btn-sm" style="background:#598665; color:#fff; font-family:'poppins'; padding:6px 10px; border-radius:6px; border:none;">Verifikasi</button>
                                     </form>
