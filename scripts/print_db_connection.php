@@ -15,7 +15,7 @@ echo "database.driver=".config("database.connections.$default.driver")."\n";
 echo "session.driver=".config('session.driver')."\n";
 echo "session.connection=".(config('session.connection') ?? 'null')."\n";
 
-// Print DATABASE_URL / DB_URL if present
+
 echo "DB_URL=".env('DB_URL', env('DATABASE_URL', 'not set'))."\n";
 
 return 0;

@@ -8,17 +8,13 @@ new class extends Component {
     #[Locked]
     public array $recoveryCodes = [];
 
-    /**
-     * Mount the component.
-     */
+    
     public function mount(): void
     {
         $this->loadRecoveryCodes();
     }
 
-    /**
-     * Generate new recovery codes for the user.
-     */
+    
     public function regenerateRecoveryCodes(GenerateNewRecoveryCodes $generateNewRecoveryCodes): void
     {
         $generateNewRecoveryCodes(auth()->user());
@@ -26,9 +22,7 @@ new class extends Component {
         $this->loadRecoveryCodes();
     }
 
-    /**
-     * Load the recovery codes for the user.
-     */
+    
     private function loadRecoveryCodes(): void
     {
         $user = auth()->user();

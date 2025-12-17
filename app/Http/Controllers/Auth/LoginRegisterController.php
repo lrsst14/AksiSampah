@@ -15,17 +15,13 @@ use Illuminate\Support\Str;
 
 class LoginRegisterController extends Controller
 {
-    /**
-     * Show warga login form
-     */
+    
     public function showWargaForm()
     {
         return view('livewire.auth.login');
     }
 
-    /**
-     * Handle warga login POST
-     */
+    
     public function wargaLogin(Request $request)
     {
         $data = $request->validate([
@@ -43,9 +39,7 @@ class LoginRegisterController extends Controller
         return back()->withErrors(['email' => 'Credentials not match our records.'])->withInput($request->only('email'));
     }
 
-    /**
-     * Handle warga registration (if used)
-     */
+    
     public function wargaRegister(Request $request)
     {
         $data = $request->validate([
@@ -64,25 +58,19 @@ class LoginRegisterController extends Controller
         return redirect()->intended('/');
     }
 
-    /**
-     * Show petugas form
-     */
+    
     public function showPetugasForm()
     {
         return view('livewire.auth.petugas.login');
     }
 
-    /**
-     * Show petugas register form
-     */
+    
     public function showPetugasRegisterForm()
     {
         return view('livewire.auth.petugas.register');
     }
 
-    /**
-     * Handle petugas login
-     */
+    
     public function petugasLogin(Request $request)
     {
         $data = $request->validate([
@@ -98,9 +86,7 @@ class LoginRegisterController extends Controller
         return back()->withErrors(['email' => 'Credentials not match our records.']);
     }
 
-    /**
-     * Handle petugas registration
-     */
+    
     public function petugasRegister(Request $request)
     {
         $data = $request->validate([
@@ -120,17 +106,13 @@ class LoginRegisterController extends Controller
         return redirect()->route('petugas.dashboard');
     }
 
-    /**
-     * Show petugas forgot password form
-     */
+    
     public function showPetugasForgotPasswordForm()
     {
         return view('livewire.auth.petugas.forgot-password');
     }
 
-    /**
-     * Handle petugas forgot password
-     */
+    
     public function showPetugasResetPasswordForm(Request $request, $token = null)
     {
         return view('livewire.auth.petugas.reset-password')->with(
